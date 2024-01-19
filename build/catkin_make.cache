@@ -1,0 +1,2 @@
+tof_cam:up_core
+-DCATKIN_DEVEL_PREFIX=/home/anton202/r2d2_general_ws/devel -DCMAKE_INSTALL_PREFIX=/home/anton202/r2d2_general_ws/install -G Unix Makefiles

@@ -1,0 +1,8 @@
+prefix=/home/anton202/r2d2_general_ws/devel
+
+Name: up_core
+Description: Description of up_core
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
