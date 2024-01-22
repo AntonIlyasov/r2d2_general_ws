@@ -8,3 +8,4 @@
 
 # modified environment variables
 export PWD='/home/anton202/r2d2_general_ws/build'
+export PYTHONPATH="/home/anton202/r2d2_general_ws/devel/lib/python3/dist-packages:$PYTHONPATH"

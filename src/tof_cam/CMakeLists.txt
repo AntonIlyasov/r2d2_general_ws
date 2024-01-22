@@ -72,11 +72,12 @@ find_package(OpenCV 4.7.0 REQUIRED)
 #   Action2.action
 # )
 
-## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+# Generate added messages and services with any dependencies listed here
+generate_messages(
+  DEPENDENCIES
+  roscpp
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##

@@ -8,6 +8,11 @@
 
 namespace OpenNIOpenCV {
 
+    enum colorType{
+        COLOR_1280_720_RGB888_30FPS,
+        COLOR_1920_1080_RGB888_15FPS
+    };
+
     /*
 
         Функция для получения поддерживаемых форматов пикселей с строковом
@@ -83,7 +88,11 @@ namespace OpenNIOpenCV {
         /*
             Метод, для установки формата пикселей цветного изображения
         */
-        void setColorPixelFormat(PixelFormat);
+        void setColorPixelFormat(openni::PixelFormat);
+        /*
+            Метод, для установки видеорежима цветного изображения
+        */
+        void setColorVideoMode(size_t);
         /*
             Методы, для получения информации о разрешении цветного изображения
         */
@@ -96,7 +105,7 @@ namespace OpenNIOpenCV {
         /*
             Метод, для получения информации формате пикселей цветного изображения
         */
-        std::string getColorPixelFormat();
+        const char* getColorPixelFormat();
         /*
             Методы, для получения информации о разрешении изображения глубины
         */

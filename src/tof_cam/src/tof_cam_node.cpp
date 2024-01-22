@@ -6,25 +6,25 @@
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "tof_cam_node");
-  ros::NodeHandle n;
-
   Tof_cam my_cam;
 
-  my_cam.printColorSensorInfo();
+  while(ros::ok()){
 
-  while(1){
-
-    my_cam.publishColorFrame();
     my_cam.publishDepthFrame16C1();
     my_cam.publishIrFrame();
 
-    // my_cam.getColorFrame();
-    // my_cam.getDepthFrame();
-    // my_cam.getIrFrame();
+    if(my_cam.getCommandFromTopic() == 0){
+      my_cam.publishColorFrame();
+    }
+    if(my_cam.getCommandFromTopic() == 1){
+      my_cam.publishColorFrameMaxQuality();
+    }
 
     int framePerSecond = 30;
     char character = cv::waitKey(1000 / framePerSecond);
     if (character == 27) break;
+
+    ros::spinOnce();
   }
 
   return 0;

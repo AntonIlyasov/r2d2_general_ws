@@ -225,18 +225,25 @@ namespace OpenNIOpenCV {
 
   void OpenNI2OpenCV::getColorFrame(cv::Mat& frame)
   {
-      if(frame.cols != m_width || frame.rows != m_height) {
-          frame.create(m_height, m_width, CV_8UC3);
-      }
-      openni::VideoMode vm = m_colorStream.getVideoMode();
+      // if(frame.cols != m_width || frame.rows != m_height) {
+      //     frame.create(m_height, m_width, CV_8UC3);
+      // }
+      frame.create(colorVideoMode.getResolutionY(), colorVideoMode.getResolutionX(), CV_8UC3);
+
       int cols, rows;
 
       openni::VideoFrameRef colorFrame;
 
+      m_colorStream.setVideoMode(colorVideoMode);
       m_colorStream.readFrame(&colorFrame);
-      openni::RGB888Pixel* dData = (openni::RGB888Pixel*)colorFrame.getData();
-      memcpy(frame.data, dData, colorFrame.getStrideInBytes() * colorFrame.getHeight());
+
+      cv::Mat im_RGB(colorFrame.getHeight(), colorFrame.getWidth(), CV_8UC3, (void*)colorFrame.getData());
+      im_RGB.copyTo(frame);
       cvtColor(frame, frame, cv::COLOR_RGB2BGR);
+
+      // openni::RGB888Pixel* dData = (openni::RGB888Pixel*)colorFrame.getData();
+      // memcpy(frame.data, dData, colorFrame.getStrideInBytes() * colorFrame.getHeight());
+      // cvtColor(frame, frame, cv::COLOR_RGB2BGR);
   }
 
   void OpenNI2OpenCV::getDepthFrame(cv::Mat& frame)
@@ -354,8 +361,44 @@ namespace OpenNIOpenCV {
     colorVideoMode.setFps(fps);
   }
 
-  void OpenNI2OpenCV::setColorPixelFormat(PixelFormat format){
+  void OpenNI2OpenCV::setColorPixelFormat(openni::PixelFormat format){
     colorVideoMode.setPixelFormat(format);
+  }
+
+  void OpenNI2OpenCV::setColorVideoMode(size_t type){
+    if (m_colorStream.isValid()){
+      const openni::SensorInfo& sensorinflo = m_colorStream.getSensorInfo();
+      const openni::Array<openni::VideoMode>& videomodes = sensorinflo.getSupportedVideoModes();
+      // for (int i = 0; i < videomodes.getSize(); i++)
+      // {
+      //   std::cout << i << ": " << videomodes[i].getResolutionX() << "x" << videomodes[i].getResolutionY()<< ": " << PixelFormatToStr(videomodes[i].getPixelFormat()) << ": " << videomodes[i].getFps() << std::endl;
+      // }
+
+      switch (type)
+      {
+      case OpenNIOpenCV::COLOR_1280_720_RGB888_30FPS:
+        if (colorVideoMode == videomodes[2]) return;
+        colorVideoMode = videomodes[2];
+        if (colorVideoMode == videomodes[2]){
+          std::cout << "SUCCESS colorVideoMode Set" << std::endl;
+          std::cout << "colorVideoMode: " << colorVideoMode.getResolutionX() << "x" << colorVideoMode.getResolutionY()<< ": " << PixelFormatToStr(colorVideoMode.getPixelFormat()) << ": " << colorVideoMode.getFps() << std::endl;
+        }
+        break;
+      case OpenNIOpenCV::COLOR_1920_1080_RGB888_15FPS:
+        if (colorVideoMode == videomodes[6]) return;
+        colorVideoMode = videomodes[6];
+        if (colorVideoMode == videomodes[6]){
+          std::cout << "SUCCESS colorVideoMode Set" << std::endl;
+          std::cout << "colorVideoMode: " << colorVideoMode.getResolutionX() << "x" << colorVideoMode.getResolutionY()<< ": " << PixelFormatToStr(colorVideoMode.getPixelFormat()) << ": " << colorVideoMode.getFps() << std::endl;
+        }
+        break;
+      default:
+        break;
+      }
+
+    } else{
+      std::cout << "Color stream is not valid" << std::endl;
+    }
   }
 
   int OpenNI2OpenCV::getColorResolutionX(){
@@ -367,11 +410,11 @@ namespace OpenNIOpenCV {
   }
 
   int OpenNI2OpenCV::getColorFps(){
-    return colorVideoMode.getColorFps();
+    return colorVideoMode.getFps();
   }
 
-  std::string OpenNI2OpenCV::getColorPixelFormat(){
-    return colorVideoMode.getResolutionY();
+  const char* OpenNI2OpenCV::getColorPixelFormat(){
+    return PixelFormatToStr(colorVideoMode.getPixelFormat());
   }
 
   int OpenNI2OpenCV::getDepthResolutionX(){

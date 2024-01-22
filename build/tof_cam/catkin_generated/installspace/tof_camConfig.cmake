@@ -177,7 +177,7 @@ foreach(library ${libraries})
   endif()
 endforeach()
 
-set(tof_cam_EXPORTED_TARGETS "")
+set(tof_cam_EXPORTED_TARGETS "tof_cam_generate_messages_cpp;tof_cam_generate_messages_eus;tof_cam_generate_messages_lisp;tof_cam_generate_messages_nodejs;tof_cam_generate_messages_py")
 # create dummy targets for exported code generation targets to make life of users easier
 foreach(t ${tof_cam_EXPORTED_TARGETS})
   if(NOT TARGET ${t})
@@ -214,7 +214,7 @@ foreach(depend ${depends})
   _list_append_deduplicate(tof_cam_EXPORTED_TARGETS ${${tof_cam_dep}_EXPORTED_TARGETS})
 endforeach()
 
-set(pkg_cfg_extras "")
+set(pkg_cfg_extras "tof_cam-msg-extras.cmake")
 foreach(extra ${pkg_cfg_extras})
   if(NOT IS_ABSOLUTE ${extra})
     set(extra ${tof_cam_DIR}/${extra})
