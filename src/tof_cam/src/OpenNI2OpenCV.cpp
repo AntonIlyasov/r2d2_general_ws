@@ -432,4 +432,16 @@ namespace OpenNIOpenCV {
   int OpenNI2OpenCV::getIrResolutionY(){
     return irVideoMode.getResolutionY();
   }
+
+  bool OpenNI2OpenCV::m_colorStreamIsValid(){
+    return m_colorStream.isValid();
+  }
+
+  bool OpenNI2OpenCV::m_depthStreamIsValid(){
+    return m_depthStream.isValid();
+  }
+
+  bool OpenNI2OpenCV::m_irStreamIsValid(){
+    return m_irStream.isValid();
+  }
 }

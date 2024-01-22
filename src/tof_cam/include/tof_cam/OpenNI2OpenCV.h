@@ -122,6 +122,10 @@ namespace OpenNIOpenCV {
                 - frame - Матрица для записи полученного с устройства кадра 1 канальная 16 битная
         */
         void getDepthFrame16C1(cv::Mat& frame);
+
+        bool m_colorStreamIsValid();
+        bool m_depthStreamIsValid();
+        bool m_irStreamIsValid();
     };
 
 }

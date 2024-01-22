@@ -13,11 +13,22 @@ int main(int argc, char **argv)
     my_cam.publishDepthFrame16C1();
     my_cam.publishIrFrame();
 
-    if(my_cam.getCommandFromTopic() == 0){
+    switch (my_cam.getCommandFromTopic())
+    {
+    case 0:
       my_cam.publishColorFrame();
-    }
-    if(my_cam.getCommandFromTopic() == 1){
+      break;
+    case 1:
       my_cam.publishColorFrameMaxQuality();
+      break;
+    case 2:
+      my_cam.shutdownTofCam();
+      break;
+    case 3:
+      my_cam.resetTofCam();
+      break;
+    default:
+      break;
     }
 
     int framePerSecond = 30;

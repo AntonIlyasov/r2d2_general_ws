@@ -25,15 +25,6 @@ Tof_cam::~Tof_cam(){
 
 Tof_cam::Tof_cam(int a){}
 
-void Tof_cam::getColorFrame(){
-  cv::Mat colorFrame;
-  oni.setColorVideoMode(OpenNIOpenCV::COLOR_1280_720_RGB888_30FPS);
-  std::cout << "getColorFrame:            " << oni.getColorResolutionX() << "x" << oni.getColorResolutionY()<< ": " << oni.getColorPixelFormat() << ": " << oni.getColorFps() << std::endl;
-  oni.getColorFrame(colorFrame);
-  std::cout << colorFrame.size() << "\n";
-  if(!colorFrame.empty()) cv::imshow("Color", colorFrame);
-}
-
 void Tof_cam::fromCommandTopicCallback(const std_msgs::Int32& msg) {
   std::cout << "\033[1;34m fromCommandTopicCallback \033[0m\n";
   commandFromTopic = msg.data;
@@ -43,7 +34,18 @@ int Tof_cam::getCommandFromTopic(){
   return commandFromTopic;
 }
 
+void Tof_cam::getColorFrame(){
+  if (!oni.m_colorStreamIsValid()) return;
+  cv::Mat colorFrame;
+  oni.setColorVideoMode(OpenNIOpenCV::COLOR_1280_720_RGB888_30FPS);
+  std::cout << "getColorFrame:            " << oni.getColorResolutionX() << "x" << oni.getColorResolutionY()<< ": " << oni.getColorPixelFormat() << ": " << oni.getColorFps() << std::endl;
+  oni.getColorFrame(colorFrame);
+  std::cout << colorFrame.size() << "\n";
+  if(!colorFrame.empty()) cv::imshow("Color", colorFrame);
+}
+
 void Tof_cam::getColorFrameMaxQuality(){
+  if (!oni.m_colorStreamIsValid()) return;
   cv::Mat colorFrameMaxQuality;  
   oni.setColorVideoMode(OpenNIOpenCV::COLOR_1920_1080_RGB888_15FPS);
   std::cout << "getColorFrameMaxQuality:  " << oni.getColorResolutionX() << "x" << oni.getColorResolutionY()<< ": " << oni.getColorPixelFormat() << ": " << oni.getColorFps() << std::endl;
@@ -53,12 +55,14 @@ void Tof_cam::getColorFrameMaxQuality(){
 }
 
 void Tof_cam::getDepthFrame(){
+  if (!oni.m_depthStreamIsValid()) return;
   cv::Mat depthFrame;
   oni.getDepthFrame(depthFrame);
   if(!depthFrame.empty()) cv::imshow("Depth", depthFrame);
 }
 
 void Tof_cam::getIrFrame(){
+  if (!oni.m_irStreamIsValid()) return;
   cv::Mat irFrame;
   oni.getIrFrame(irFrame);
   if(!irFrame.empty())    cv::imshow("IR",    irFrame);
@@ -69,6 +73,7 @@ void Tof_cam::printColorSensorInfo(){
 }
 
 void Tof_cam::publishColorFrame(){
+  if (!oni.m_colorStreamIsValid()) return;
   cv::Mat colorFrame;
   oni.setColorVideoMode(OpenNIOpenCV::COLOR_1280_720_RGB888_30FPS);
   std::cout << "publishColorFrame: " << oni.getColorResolutionX() << "x" << oni.getColorResolutionY()<< ": " << oni.getColorPixelFormat() << ": " << oni.getColorFps() << std::endl;
@@ -84,6 +89,7 @@ void Tof_cam::publishColorFrame(){
 }
 
 void Tof_cam::publishColorFrameMaxQuality(){
+  if (!oni.m_colorStreamIsValid()) return;
   cv::Mat colorFrameMaxQuality;
   oni.setColorVideoMode(OpenNIOpenCV::COLOR_1920_1080_RGB888_15FPS);
   std::cout << "publishColorFrameMaxQuality: " << oni.getColorResolutionX() << "x" << oni.getColorResolutionY()<< ": " << oni.getColorPixelFormat() << ": " << oni.getColorFps() << std::endl;
@@ -99,6 +105,7 @@ void Tof_cam::publishColorFrameMaxQuality(){
 }
 
 void Tof_cam::publishDepthFrame16C1(){
+  if (!oni.m_depthStreamIsValid()) return;
   cv::Mat depthFrame16C1;
   // std::cout << "publishDepthFrame16C1         RESOLUTION: " << oni.getDepthResolutionX() << "x" << oni.getDepthResolutionY() << "\n";
   oni.getDepthFrame16C1(depthFrame16C1);
@@ -113,6 +120,7 @@ void Tof_cam::publishDepthFrame16C1(){
 }
 
 void Tof_cam::publishIrFrame(){
+  if (!oni.m_irStreamIsValid()) return;
   cv::Mat irFrame;
   // std::cout << "publishIrFrame                RESOLUTION: " << oni.getIrResolutionX() << "x" << oni.getIrResolutionY() << "\n";
   oni.getIrFrame(irFrame);
