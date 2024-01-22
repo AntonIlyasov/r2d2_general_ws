@@ -29,6 +29,9 @@ public:
   void printColorSensorInfo();
 
   int getCommandFromTopic();
+  void shutdownTofCam();
+  void resetTofCam();
+  void turnOnTofCam();
 
 private:
   OpenNIOpenCV::OpenNI2OpenCV oni;

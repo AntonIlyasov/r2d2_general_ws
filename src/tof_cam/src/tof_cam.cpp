@@ -5,7 +5,7 @@
 #include <sensor_msgs/image_encodings.h>
 
 Tof_cam::Tof_cam(){
-  
+  openni::OpenNI::initialize();
   if (oni.init() != openni::STATUS_OK){
     printf("Initializatuion failed");
   }
@@ -124,5 +124,27 @@ void Tof_cam::publishIrFrame(){
     out_msg.image = irFrame;
     pubIr.publish(out_msg.toImageMsg());
   }
+}
 
+void Tof_cam::shutdownTofCam(){
+  openni::OpenNI::shutdown();
+  oni.~OpenNI2OpenCV();
+}
+
+void Tof_cam::resetTofCam(){
+  openni::OpenNI::shutdown();
+  oni.~OpenNI2OpenCV();
+  openni::OpenNI::initialize();
+  if (oni.init() != openni::STATUS_OK){
+    printf("Initializatuion failed");
+  }
+  printf("oni.init()\n");
+}
+
+void Tof_cam::turnOnTofCam(){
+  openni::OpenNI::initialize();
+  if (oni.init() != openni::STATUS_OK){
+    printf("Initializatuion failed");
+  }
+  printf("oni.init()\n");
 }
