@@ -5,7 +5,6 @@
 #include <sensor_msgs/image_encodings.h>
 
 Tof_cam::Tof_cam(){
-  openni::OpenNI::initialize();
   if (oni.init() != openni::STATUS_OK){
     printf("Initializatuion failed");
   }
@@ -16,12 +15,10 @@ Tof_cam::Tof_cam(){
   pubIr     = nh.advertise<sensor_msgs::Image>(TO_IR_TOPIC, 1);
 
   commands_sub = nh.subscribe(FROM_COMMAND_TOPIC, 1, &Tof_cam::fromCommandTopicCallback, this);
-  commandFromTopic = 0;
+  commandFromTopic = 3;
 }
 
-Tof_cam::~Tof_cam(){
-  openni::OpenNI::shutdown();
-}
+Tof_cam::~Tof_cam(){}
 
 Tof_cam::Tof_cam(int a){}
 
@@ -58,7 +55,14 @@ void Tof_cam::getDepthFrame(){
   if (!oni.m_depthStreamIsValid()) return;
   cv::Mat depthFrame;
   oni.getDepthFrame(depthFrame);
-  if(!depthFrame.empty()) cv::imshow("Depth", depthFrame);
+  if(!depthFrame.empty()) cv::imshow("depthFrame", depthFrame);
+}
+
+void Tof_cam::getDepthFrame16C1(){
+  if (!oni.m_depthStreamIsValid()) return;
+  cv::Mat depthFrame16C1;
+  oni.getDepthFrame16C1(depthFrame16C1);
+  if(!depthFrame16C1.empty()) cv::imshow("depthFrame16C1", depthFrame16C1);
 }
 
 void Tof_cam::getIrFrame(){
@@ -135,24 +139,39 @@ void Tof_cam::publishIrFrame(){
 }
 
 void Tof_cam::shutdownTofCam(){
-  openni::OpenNI::shutdown();
-  oni.~OpenNI2OpenCV();
+  if (oni.getIsTurnOn()){
+    std::cout << "\033[1;31m shutdown TofCam\n \033[0m\n";
+    oni.~OpenNI2OpenCV();
+  }
 }
 
 void Tof_cam::resetTofCam(){
-  openni::OpenNI::shutdown();
-  oni.~OpenNI2OpenCV();
-  openni::OpenNI::initialize();
-  if (oni.init() != openni::STATUS_OK){
-    printf("Initializatuion failed");
+
+
+  if (oni.getIsReset()) return;
+
+  if (oni.getIsTurnOn()){
+    std::cout << "\033[1;31m shutdown TofCam\n \033[0m\n";
+    oni.~OpenNI2OpenCV();
   }
-  printf("oni.init()\n");
+
+  if (oni.getIsTurnOff()){
+    std::cout << "\033[1;32m turn on TofCam\n \033[0m\n";
+    if (oni.init() != openni::STATUS_OK){
+      printf("Initializatuion failed");
+    }
+    printf("oni.init()\n");
+  }
+
+  oni.setIsReset(true);
 }
 
 void Tof_cam::turnOnTofCam(){
-  openni::OpenNI::initialize();
-  if (oni.init() != openni::STATUS_OK){
-    printf("Initializatuion failed");
+  if (oni.getIsTurnOff()){
+    std::cout << "\033[1;32m turn on TofCam\n \033[0m\n";
+    if (oni.init() != openni::STATUS_OK){
+      printf("Initializatuion failed");
+    }
+    printf("oni.init()\n");
   }
-  printf("oni.init()\n");
 }

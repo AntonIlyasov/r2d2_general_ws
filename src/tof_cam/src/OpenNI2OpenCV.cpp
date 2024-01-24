@@ -63,7 +63,11 @@ namespace OpenNIOpenCV {
     return newColor;
   }
 
-  OpenNI2OpenCV::OpenNI2OpenCV() {;}
+  OpenNI2OpenCV::OpenNI2OpenCV() {
+    is_turn_on  = false;
+    is_turn_off = false;
+    is_reset    = false;
+  }
 
   OpenNI2OpenCV::~OpenNI2OpenCV()
   {
@@ -80,6 +84,9 @@ namespace OpenNIOpenCV {
           m_irStream.stop();
           m_irStream.destroy();
       }
+      is_turn_on  = false;
+      is_turn_off = true;
+      is_reset    = false;
   }
 
   openni::Status OpenNI2OpenCV::init()
@@ -91,6 +98,9 @@ namespace OpenNIOpenCV {
 
       printf("After initialization:\n%s\n", openni::OpenNI::getExtendedError());
       rc = m_device.open(deviceURI);
+      is_turn_on  = true;
+      is_turn_off = false;
+      is_reset    = false;
       if (rc != openni::STATUS_OK)
       {
           printf("Device open failed:\n%s\n", openni::OpenNI::getExtendedError());
@@ -137,6 +147,10 @@ namespace OpenNIOpenCV {
       else{
           std::cout << "Image Registration Mode dont supported " << std::endl;
       }
+
+      m_colorStream.setMirroringEnabled(true);
+      m_depthStream.setMirroringEnabled(true);
+      m_irStream.setMirroringEnabled(true);
 
       rc = m_depthStream.start();
       if (rc != openni::STATUS_OK)
@@ -279,27 +293,23 @@ namespace OpenNIOpenCV {
   }
 
   void OpenNI2OpenCV::getDepthFrame16C1(cv::Mat& frame){
-      cv::Mat localFrame;
-      if(localFrame.cols != m_width || localFrame.rows != m_height) {
+      if(frame.cols != m_width || frame.rows != m_height) {
           frame.create(m_height, m_width, CV_16SC1);
-          localFrame.create(m_height, m_width, CV_16SC1);
       }
-      openni::VideoMode vm = m_depthStream.getVideoMode();
 
       openni::VideoFrameRef depthFrame;
 
       m_depthStream.readFrame(&depthFrame);
       openni::DepthPixel* dData = (openni::DepthPixel*)depthFrame.getData();
-      memcpy(localFrame.data, dData, depthFrame.getStrideInBytes() * depthFrame.getHeight());
+      memcpy(frame.data, dData, depthFrame.getStrideInBytes() * depthFrame.getHeight());
 
-      localFrame.copyTo(frame);
+      frame = frame / 3;
   }
 
   void OpenNI2OpenCV::getIrFrame(cv::Mat& frame){
       if(frame.cols != m_width || frame.rows != m_height) {
           frame.create(m_height, m_width, CV_8UC1);
       }
-      openni::VideoMode vm = m_depthStream.getVideoMode();
 
       openni::VideoFrameRef irFrame;
 
@@ -444,4 +454,21 @@ namespace OpenNIOpenCV {
   bool OpenNI2OpenCV::m_irStreamIsValid(){
     return m_irStream.isValid();
   }
+
+  bool OpenNI2OpenCV::getIsTurnOff(){
+    return is_turn_off;
+  }
+
+  bool OpenNI2OpenCV::getIsTurnOn(){
+    return is_turn_on;
+  }
+
+  bool OpenNI2OpenCV::getIsReset(){
+    return is_reset;
+  }
+
+  void OpenNI2OpenCV::setIsReset(bool val){
+    is_reset = val;
+  }
+
 }

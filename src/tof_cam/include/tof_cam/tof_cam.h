@@ -19,6 +19,7 @@ public:
   void getColorFrame();
   void getColorFrameMaxQuality();
   void getDepthFrame();
+  void getDepthFrame16C1();
   void getIrFrame();
 
   void publishColorFrame();

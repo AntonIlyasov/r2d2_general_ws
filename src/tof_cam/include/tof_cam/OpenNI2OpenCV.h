@@ -29,6 +29,7 @@ namespace OpenNIOpenCV {
         openni::VideoStream m_depthStream, m_colorStream, m_irStream;
         openni::Device m_device;
         int m_height, m_width;
+        bool is_turn_off, is_turn_on, is_reset;
 
     /*
         Функция для вычисления значения градиента писелей в зависимости от расстояния
@@ -126,6 +127,11 @@ namespace OpenNIOpenCV {
         bool m_colorStreamIsValid();
         bool m_depthStreamIsValid();
         bool m_irStreamIsValid();
+
+        bool getIsTurnOff();
+        bool getIsTurnOn();
+        bool getIsReset();
+        void setIsReset(bool);
     };
 
 }
