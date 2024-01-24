@@ -1,0 +1,2 @@
+tof_cam_simple
+-DCATKIN_DEVEL_PREFIX=/home/anton202/tof_simple_ws/devel -DCMAKE_INSTALL_PREFIX=/home/anton202/tof_simple_ws/install -G Unix Makefiles
