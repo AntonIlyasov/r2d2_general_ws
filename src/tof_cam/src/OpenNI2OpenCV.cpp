@@ -294,7 +294,7 @@ namespace OpenNIOpenCV {
 
   void OpenNI2OpenCV::getDepthFrame16C1(cv::Mat& frame){
       if(frame.cols != m_width || frame.rows != m_height) {
-          frame.create(m_height, m_width, CV_16SC1);
+        frame.create(m_height, m_width, CV_16SC1);
       }
 
       openni::VideoFrameRef depthFrame;
@@ -302,8 +302,8 @@ namespace OpenNIOpenCV {
       m_depthStream.readFrame(&depthFrame);
       openni::DepthPixel* dData = (openni::DepthPixel*)depthFrame.getData();
       memcpy(frame.data, dData, depthFrame.getStrideInBytes() * depthFrame.getHeight());
+      cv::multiply(frame, 0.333, frame);
 
-      frame = frame / 3;
   }
 
   void OpenNI2OpenCV::getIrFrame(cv::Mat& frame){

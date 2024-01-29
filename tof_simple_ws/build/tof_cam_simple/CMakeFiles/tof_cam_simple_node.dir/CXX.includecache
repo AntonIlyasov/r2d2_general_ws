@@ -11,11 +11,13 @@ ros/ros.h
 /home/anton202/tof_simple_ws/src/tof_cam_simple/src/ros/ros.h
 opencv2/opencv.hpp
 -
+opencv2/opencv_modules.hpp
+-
 opencv2/core/ocl.hpp
 -
-opencv2/imgproc/imgproc.hpp
+iostream
 -
-opencv2/highgui/highgui.hpp
+fstream
 -
 
 /opt/ros/noetic/include/ros/advertise_options.h
@@ -1506,10 +1508,6 @@ opencv2/imgcodecs.hpp
 opencv2/videoio.hpp
 /usr/local/include/opencv4/opencv2/opencv2/videoio.hpp
 
-/usr/local/include/opencv4/opencv2/highgui/highgui.hpp
-opencv2/highgui.hpp
-/usr/local/include/opencv4/opencv2/highgui/opencv2/highgui.hpp
-
 /usr/local/include/opencv4/opencv2/imgcodecs.hpp
 opencv2/core.hpp
 /usr/local/include/opencv4/opencv2/opencv2/core.hpp
@@ -1519,10 +1517,6 @@ opencv2/core.hpp
 /usr/local/include/opencv4/opencv2/opencv2/core.hpp
 ./imgproc/segmentation.hpp
 /usr/local/include/opencv4/opencv2/imgproc/segmentation.hpp
-
-/usr/local/include/opencv4/opencv2/imgproc/imgproc.hpp
-opencv2/imgproc.hpp
-/usr/local/include/opencv4/opencv2/imgproc/opencv2/imgproc.hpp
 
 /usr/local/include/opencv4/opencv2/imgproc/segmentation.hpp
 opencv2/imgproc.hpp

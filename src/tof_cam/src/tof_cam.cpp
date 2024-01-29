@@ -164,6 +164,7 @@ void Tof_cam::resetTofCam(){
   }
 
   oni.setIsReset(true);
+  commandFromTopic = 3;
 }
 
 void Tof_cam::turnOnTofCam(){
@@ -174,4 +175,5 @@ void Tof_cam::turnOnTofCam(){
     }
     printf("oni.init()\n");
   }
+  commandFromTopic = 3;
 }
