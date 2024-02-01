@@ -16,6 +16,7 @@ Tof_cam::Tof_cam(){
 
   commands_sub = nh.subscribe(FROM_COMMAND_TOPIC, 1, &Tof_cam::fromCommandTopicCallback, this);
   commandFromTopic = 3;
+  countBmp         = 0;
 }
 
 Tof_cam::~Tof_cam(){}
@@ -108,6 +109,49 @@ void Tof_cam::publishColorFrameMaxQuality(){
   }
 }
 
+void Tof_cam::saveColorFrameMaxQuality(){
+  countBmp++;
+  if (!oni.m_colorStreamIsValid()) return;
+  cv::Mat colorFrameMaxQuality;
+  oni.setColorVideoMode(OpenNIOpenCV::COLOR_1920_1080_RGB888_15FPS);
+  std::cout << "publishColorFrameMaxQuality: " << oni.getColorResolutionX() << "x" << oni.getColorResolutionY()<< ": " << oni.getColorPixelFormat() << ": " << oni.getColorFps() << std::endl;
+  oni.getColorFrame(colorFrameMaxQuality);
+  cv::imwrite("colorFrameMaxQuality" + std::to_string(countBmp) + ".bmp", colorFrameMaxQuality);
+  commandFromTopic = 4;
+}
+
+void Tof_cam::sendToTCPColorFrameMaxQuality(){
+  boost::system::error_code ec;
+  boost::asio::io_context context;
+  boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::make_address("127.0.0.1"), 1234);    
+  boost::asio::ip::tcp::socket socket(context);
+  socket.connect(endpoint, ec);
+
+  if (socket.is_open()) {
+    std::string fileName = "colorFrameMaxQuality" + std::to_string(countBmp) + ".bmp";
+    socket.send(boost::asio::buffer(fileName.data(), fileName.size()));
+
+    // Wait for response from server
+    socket.wait(socket.wait_read);
+    std::size_t bytes = socket.available();
+    if (bytes > 0) {
+      std::string response;
+      response.resize(bytes);
+      socket.read_some(boost::asio::buffer(response.data(), bytes), ec);
+      if (response != "OK")
+      {
+        std::cerr << "Unexpected server Error!\n";
+      }
+    }
+
+    std::ifstream input(fileName.data(), std::ios::binary);
+    std::string buffer(std::istreambuf_iterator<char>(input), {});
+    socket.send(boost::asio::buffer(buffer.data(), buffer.size()));
+    input.close();
+    std::cout << "File sent.\n";
+  }
+}
+
 void Tof_cam::publishDepthFrame16C1(){
   if (!oni.m_depthStreamIsValid()) return;
   cv::Mat depthFrame16C1;
@@ -146,7 +190,6 @@ void Tof_cam::shutdownTofCam(){
 }
 
 void Tof_cam::resetTofCam(){
-
 
   if (oni.getIsReset()) return;
 

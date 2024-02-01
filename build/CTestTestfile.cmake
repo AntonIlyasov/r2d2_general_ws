@@ -5,5 +5,6 @@
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.
 subdirs("gtest")
+subdirs("led_eth_receiver")
+subdirs("led_control")
 subdirs("tof_cam")
-subdirs("up_core")

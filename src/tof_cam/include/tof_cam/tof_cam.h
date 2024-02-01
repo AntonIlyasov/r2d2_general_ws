@@ -2,6 +2,7 @@
 #include "OpenNI2OpenCV.h"
 #include <ros/ros.h>
 #include "std_msgs/Int32.h"
+#include <boost/asio.hpp>
 
 #define TO_COLOR_TOPIC      "toColorTopic"
 #define TO_DEPTH_TOPIC      "toDepthTopic"
@@ -24,6 +25,8 @@ public:
 
   void publishColorFrame();
   void publishColorFrameMaxQuality();
+  void saveColorFrameMaxQuality();
+  void sendToTCPColorFrameMaxQuality();
   void publishDepthFrame16C1();
   void publishIrFrame();
 
@@ -46,4 +49,5 @@ private:
 
   void fromCommandTopicCallback(const std_msgs::Int32&);
 
+  int countBmp;
 };

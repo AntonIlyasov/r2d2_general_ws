@@ -3,7 +3,8 @@ project(tof_cam)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
-
+set(CMAKE_CXX_STANDARD 17)
+# SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -15,7 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
 )
-
+find_package(Boost 1.71.0 REQUIRED COMPONENTS system)
 find_package(OpenCV 4.7.0 REQUIRED)
 
 ## System dependencies are found with CMake's conventions
@@ -170,6 +171,7 @@ set(OPENNI2_REDIST  include/tof_cam/libs/Redist/)
 add_executable(tof_cam_node ${SOURCES} src/tof_cam_node.cpp)
 target_link_libraries(tof_cam_node ${catkin_LIBRARIES})
 target_link_libraries(tof_cam_node ${OpenCV_LIBRARIES})
+target_link_libraries(tof_cam_node ${Boost_LIBRARIES})
 target_include_directories(tof_cam_node PRIVATE ${OpenCV_INCLUDE_DIRS} ${OPENNI2_INCLUDE})
 target_include_directories (tof_cam_node PRIVATE include/tof_cam/ src/)
 target_link_directories(tof_cam_node PRIVATE ${OPENNI2_REDIST})

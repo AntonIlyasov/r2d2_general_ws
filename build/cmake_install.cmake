@@ -131,8 +131,9 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/anton202/r2d2_general_ws/build/gtest/cmake_install.cmake")
+  include("/home/anton202/r2d2_general_ws/build/led_eth_receiver/cmake_install.cmake")
+  include("/home/anton202/r2d2_general_ws/build/led_control/cmake_install.cmake")
   include("/home/anton202/r2d2_general_ws/build/tof_cam/cmake_install.cmake")
-  include("/home/anton202/r2d2_general_ws/build/up_core/cmake_install.cmake")
 
 endif()
 

@@ -8,26 +8,6 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-
-  if (!cv::ocl::haveOpenCL())
-  {
-    cout << "OpenCL is not available..." << endl;
-    return -1;
-  } else {
-    cout << "OpenCL is available..." << endl;
-  }
-
-  if (cv::ocl::haveOpenCL())
-  {
-    cv::ocl::Context context;
-    if (!context.create(cv::ocl::Device::TYPE_GPU))
-    {
-      std::cerr << "Failed creating the OpenCL context" << std::endl;
-      return -1;
-    }
-    cv::ocl::setUseOpenCL(true);
-  }
-
   ros::init(argc, argv, "tof_cam_node");
   Tof_cam my_cam;
 
@@ -58,6 +38,10 @@ int main(int argc, char **argv)
       break;
     case 4:
       my_cam.publishColorFrameMaxQuality();
+      break;
+    case 5:
+      my_cam.saveColorFrameMaxQuality();
+      my_cam.sendToTCPColorFrameMaxQuality();
       break;
     default:
       break;
