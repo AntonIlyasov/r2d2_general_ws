@@ -26,7 +26,7 @@ public:
     void sendMsg(uint8_t num) {
         auto start = std::chrono::high_resolution_clock::now();
 
-        uint8_t msg[] =       {num, num + 1, num + 2};
+        uint8_t msg[] =       {0,0,0,num};
 
         std::cout << "\nInput... ";
         
@@ -71,13 +71,19 @@ int main(int argc, char* argv[])
     // printf("%u\n", crc8_);
     // while(1){;}
 
+    if (argc < 3)
+    {
+        std::cerr << "Usage: " << argv[0] << " command" << " send_count" << std::endl;
+        return 1;
+    }
+
     try{
         boost::asio::io_context io_context;
         UDPClient udpClient(io_context);
-        uint8_t cnt = 0;
-        while(1){
-            udpClient.sendMsg(cnt);
-            cnt++;
+        uint32_t cnt = (uint32_t)std::stoi(argv[2]);
+        while(cnt > 0){
+            udpClient.sendMsg((uint8_t)std::stoi(argv[1]));
+            cnt--;
         }
     } catch (std::exception e){
 		std::cerr << "Exeption: " << e.what() << std::endl;

@@ -40,8 +40,7 @@ int main(int argc, char **argv)
       my_cam.publishColorFrameMaxQuality();
       break;
     case 5:
-      my_cam.saveColorFrameMaxQuality();
-      my_cam.sendToTCPColorFrameMaxQuality();
+      my_cam.publishColorFrameMaxQuality();
       break;
     default:
       break;

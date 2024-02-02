@@ -69,6 +69,7 @@
         "bit": "cpp",
         "csignal": "cpp",
         "codecvt": "cpp",
-        "future": "cpp"
+        "future": "cpp",
+        "filesystem": "cpp"
     }
 }

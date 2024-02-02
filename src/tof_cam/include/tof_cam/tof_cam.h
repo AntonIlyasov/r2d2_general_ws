@@ -1,7 +1,8 @@
 #pragma once
 #include "OpenNI2OpenCV.h"
 #include <ros/ros.h>
-#include "std_msgs/Int32.h"
+#include <std_msgs/ByteMultiArray.h>
+#include <std_msgs/Int32.h>
 #include <boost/asio.hpp>
 
 #define TO_COLOR_TOPIC      "toColorTopic"
@@ -32,7 +33,7 @@ public:
 
   void printColorSensorInfo();
 
-  int getCommandFromTopic();
+  uint8_t getCommandFromTopic();
   void shutdownTofCam();
   void resetTofCam();
   void turnOnTofCam();
@@ -45,9 +46,10 @@ private:
   ros::Publisher pubIr;
   ros::Subscriber commands_sub;
 
-  int commandFromTopic;
+  uint8_t commandFromTopic[4];
+  uint32_t eth_recvd_count;
 
-  void fromCommandTopicCallback(const std_msgs::Int32&);
+  void fromCommandTopicCallback(const std_msgs::ByteMultiArray::ConstPtr& msg);
 
-  int countBmp;
+  uint32_t countBmp;
 };

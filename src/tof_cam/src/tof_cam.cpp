@@ -13,23 +13,32 @@ Tof_cam::Tof_cam(){
   pubColor  = nh.advertise<sensor_msgs::Image>(TO_COLOR_TOPIC, 1);
   pubDepth  = nh.advertise<sensor_msgs::Image>(TO_DEPTH_TOPIC, 1);
   pubIr     = nh.advertise<sensor_msgs::Image>(TO_IR_TOPIC, 1);
-
   commands_sub = nh.subscribe(FROM_COMMAND_TOPIC, 1, &Tof_cam::fromCommandTopicCallback, this);
-  commandFromTopic = 3;
-  countBmp         = 0;
+  
+  memset(commandFromTopic, 0, sizeof(commandFromTopic));
+  commandFromTopic[3] = 3;
+  countBmp            = 0;
+  eth_recvd_count     = 0;
 }
 
 Tof_cam::~Tof_cam(){}
 
 Tof_cam::Tof_cam(int a){}
 
-void Tof_cam::fromCommandTopicCallback(const std_msgs::Int32& msg) {
+void Tof_cam::fromCommandTopicCallback(const std_msgs::ByteMultiArray::ConstPtr& msg) {
+  eth_recvd_count++;
   std::cout << "\033[1;34m fromCommandTopicCallback \033[0m\n";
-  commandFromTopic = msg.data;
+  std::cout << "eth_recvd_count         = " << eth_recvd_count << std::endl;
+  std::cout << "recvd_msg->data.size()  = " << msg->data.size() << std::endl;
+  for (int i = 0; i < msg->data.size(); i++){
+    commandFromTopic[i] = (uint8_t)msg->data[i];
+    printf("[%u]", commandFromTopic[i]);
+  }
+  std::cout << "\n";
 }
 
-int Tof_cam::getCommandFromTopic(){
-  return commandFromTopic;
+uint8_t Tof_cam::getCommandFromTopic(){
+  return commandFromTopic[3];
 }
 
 void Tof_cam::getColorFrame(){
@@ -117,7 +126,7 @@ void Tof_cam::saveColorFrameMaxQuality(){
   std::cout << "publishColorFrameMaxQuality: " << oni.getColorResolutionX() << "x" << oni.getColorResolutionY()<< ": " << oni.getColorPixelFormat() << ": " << oni.getColorFps() << std::endl;
   oni.getColorFrame(colorFrameMaxQuality);
   cv::imwrite("colorFrameMaxQuality" + std::to_string(countBmp) + ".bmp", colorFrameMaxQuality);
-  commandFromTopic = 4;
+  commandFromTopic[3] = 4;
 }
 
 void Tof_cam::sendToTCPColorFrameMaxQuality(){
@@ -207,7 +216,7 @@ void Tof_cam::resetTofCam(){
   }
 
   oni.setIsReset(true);
-  commandFromTopic = 3;
+  commandFromTopic[3] = 3;
 }
 
 void Tof_cam::turnOnTofCam(){
@@ -218,5 +227,5 @@ void Tof_cam::turnOnTofCam(){
     }
     printf("oni.init()\n");
   }
-  commandFromTopic = 3;
+  commandFromTopic[3] = 3;
 }
