@@ -1,8 +1,0 @@
-prefix=/home/anton202/tof_simple_ws/install
-
-Name: tof_cam_simple
-Description: Description of tof_cam_simple
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

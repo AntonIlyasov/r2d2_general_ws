@@ -407,6 +407,33 @@ rosgraph_msgs_generate_messages_py/fast:
 	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make eth_vik_rx/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
 .PHONY : rosgraph_msgs_generate_messages_py/fast
 
+src/umba_crc_table.o: src/umba_crc_table.c.o
+
+.PHONY : src/umba_crc_table.o
+
+# target to build an object file
+src/umba_crc_table.c.o:
+	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_eth.dir/build.make eth_vik_rx/CMakeFiles/vik_eth.dir/src/umba_crc_table.c.o
+.PHONY : src/umba_crc_table.c.o
+
+src/umba_crc_table.i: src/umba_crc_table.c.i
+
+.PHONY : src/umba_crc_table.i
+
+# target to preprocess a source file
+src/umba_crc_table.c.i:
+	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_eth.dir/build.make eth_vik_rx/CMakeFiles/vik_eth.dir/src/umba_crc_table.c.i
+.PHONY : src/umba_crc_table.c.i
+
+src/umba_crc_table.s: src/umba_crc_table.c.s
+
+.PHONY : src/umba_crc_table.s
+
+# target to generate assembly for a file
+src/umba_crc_table.c.s:
+	cd /home/anton202/vik_ws/build && $(MAKE) -f eth_vik_rx/CMakeFiles/vik_eth.dir/build.make eth_vik_rx/CMakeFiles/vik_eth.dir/src/umba_crc_table.c.s
+.PHONY : src/umba_crc_table.c.s
+
 src/vik_udp_rx.o: src/vik_udp_rx.cpp.o
 
 .PHONY : src/vik_udp_rx.o
@@ -463,6 +490,9 @@ help:
 	@echo "... rosgraph_msgs_generate_messages_lisp"
 	@echo "... roscpp_generate_messages_lisp"
 	@echo "... rosgraph_msgs_generate_messages_py"
+	@echo "... src/umba_crc_table.o"
+	@echo "... src/umba_crc_table.i"
+	@echo "... src/umba_crc_table.s"
 	@echo "... src/vik_udp_rx.o"
 	@echo "... src/vik_udp_rx.i"
 	@echo "... src/vik_udp_rx.s"

@@ -23,12 +23,11 @@ public:
         socket_.open(udp::v4());
     }
 
-    void sendMsg(uint8_t num) {
+    void sendMsg() {
         auto start = std::chrono::high_resolution_clock::now();
 
-        uint8_t msg[] =       {0,0,0,num};
-
-        std::cout << "\nInput... ";
+        uint8_t msg[] = {0xAA, 0xBB, 9, 3, 1, 2, 3, 4, 0};
+        msg[sizeof(msg) - 1]  = umba_crc8_table(msg, sizeof(msg) - 1);
         
         static uint32_t send_count = 0;
         boost::system::error_code err;
@@ -43,8 +42,7 @@ public:
             send_count++;
             std::cout << "Sent Payload = " << sent << "\n";
             std::cout << "send_count = " << send_count << "\n";
-            //printf("[crc8 = %u\n]", crc8);
-            std::this_thread::sleep_for(std::chrono::microseconds(100000));
+            std::this_thread::sleep_for(std::chrono::microseconds(1000));
         }
 
         auto end = std::chrono::high_resolution_clock::now();
@@ -71,18 +69,18 @@ int main(int argc, char* argv[])
     // printf("%u\n", crc8_);
     // while(1){;}
 
-    if (argc < 3)
+    if (argc < 2)
     {
-        std::cerr << "Usage: " << argv[0] << " command" << " send_count" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " send_count" << std::endl;
         return 1;
     }
 
     try{
         boost::asio::io_context io_context;
         UDPClient udpClient(io_context);
-        uint32_t cnt = (uint32_t)std::stoi(argv[2]);
+        uint32_t cnt = (uint32_t)std::stoi(argv[1]);
         while(cnt > 0){
-            udpClient.sendMsg((uint8_t)std::stoi(argv[1]));
+            udpClient.sendMsg();
             cnt--;
         }
     } catch (std::exception e){

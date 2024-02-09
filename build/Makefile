@@ -285,17 +285,17 @@ gtest/fast:
 .PHONY : gtest/fast
 
 #=============================================================================
-# Target rules for targets named led_eth_receiver_node
+# Target rules for targets named led_eth
 
 # Build rule for target.
-led_eth_receiver_node: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 led_eth_receiver_node
-.PHONY : led_eth_receiver_node
+led_eth: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 led_eth
+.PHONY : led_eth
 
 # fast build rule for target.
-led_eth_receiver_node/fast:
-	$(MAKE) -f led_eth_receiver/CMakeFiles/led_eth_receiver_node.dir/build.make led_eth_receiver/CMakeFiles/led_eth_receiver_node.dir/build
-.PHONY : led_eth_receiver_node/fast
+led_eth/fast:
+	$(MAKE) -f led_eth_receiver/CMakeFiles/led_eth.dir/build.make led_eth_receiver/CMakeFiles/led_eth.dir/build
+.PHONY : led_eth/fast
 
 #=============================================================================
 # Target rules for targets named std_msgs_generate_messages_py
@@ -969,7 +969,7 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
-	@echo "... led_eth_receiver_node"
+	@echo "... led_eth"
 	@echo "... std_msgs_generate_messages_py"
 	@echo "... std_msgs_generate_messages_nodejs"
 	@echo "... std_msgs_generate_messages_lisp"
