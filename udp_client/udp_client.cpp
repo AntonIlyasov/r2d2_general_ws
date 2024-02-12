@@ -26,7 +26,7 @@ public:
     void sendMsg() {
         auto start = std::chrono::high_resolution_clock::now();
 
-        uint8_t msg[] = {0xAA, 0xBB, 9, 3, 1, 2, 3, 4, 0};
+        uint8_t msg[] = {0xAA, 0xBB, 9, 3, 1, 2, 3, 4, 0};      // 0xAA 0xBB LEN=9 DATA=3 KEEPAL=1,2,3,4
         msg[sizeof(msg) - 1]  = umba_crc8_table(msg, sizeof(msg) - 1);
         
         static uint32_t send_count = 0;
@@ -42,7 +42,7 @@ public:
             send_count++;
             std::cout << "Sent Payload = " << sent << "\n";
             std::cout << "send_count = " << send_count << "\n";
-            std::this_thread::sleep_for(std::chrono::microseconds(1000));
+            std::this_thread::sleep_for(std::chrono::microseconds(10000));
         }
 
         auto end = std::chrono::high_resolution_clock::now();

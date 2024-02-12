@@ -50,11 +50,11 @@ set(SOURCES
   include/eth_vik_rx/umba_crc_table.h)
 
 # add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_executable(vik_eth src/vik_udp_rx.cpp ${SOURCES})
-target_include_directories (vik_eth PRIVATE include/eth_vik_rx/ src/)
+add_executable(vik_udp_rx src/vik_udp_rx.cpp ${SOURCES})
+target_include_directories (vik_udp_rx PRIVATE include/eth_vik_rx/ src/)
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(vik_eth
+target_link_libraries(vik_udp_rx
   ${catkin_LIBRARIES}
 )

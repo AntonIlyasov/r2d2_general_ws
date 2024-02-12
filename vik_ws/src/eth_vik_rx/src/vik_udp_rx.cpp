@@ -13,8 +13,8 @@ using boost::asio::ip::address;
 // размеры пакетов данных в нормальном режиме
 #define DATA_FROM_UDP_SIZE                     9  // [AA][BB][LEN][1b DATA][4b KeepAL][CRC]
 #define DATA_TO_UDP_SIZE                       10 // [BB][AA][LEN][1b DATA][OK][4b KeepAL][CRC]
-#define DATA_TO_TOF_CAM_CONTROL_TOPIC_SIZE     1  // [1b]
-#define DATA_FROM_TOF_CAM_CONTROL_TOPIC_SIZE   2  // [1b][OK]
+#define DATA_TO_TOF_CAM_CONTROL_TOPIC_SIZE     1  // [1b DATA]
+#define DATA_FROM_TOF_CAM_CONTROL_TOPIC_SIZE   2  // [1b DATA][OK]
 
 #define TO_TOF_CAM_CONTROL_TOPIC_NAME       "toTofCamControlTopic"
 #define FROM_TOF_CAM_CONTROL_TOPIC_NAME     "fromTofCamControlTopic"
@@ -28,8 +28,8 @@ public:
 
     memset(dataFromUDP, 0, sizeof(dataFromUDP));
     memset(dataToUDP, 0, sizeof(dataToUDP));
-    memset(dataToTofCamControlTopic, 0, sizeof(dataToTofCamControlTopic));
-    memset(dataFromTofCamControlTopic, 0, sizeof(dataFromTofCamControlTopic));
+    memset(dataToTofCamControl, 0, sizeof(dataToTofCamControl));
+    memset(dataFromTofCamControl, 0, sizeof(dataFromTofCamControl));
 
     boost::bind(&UDPServer::udp_handle_receive, this, boost::asio::placeholders::error,
         boost::asio::placeholders::bytes_transferred);
@@ -37,7 +37,7 @@ public:
   }
 
   // основной цикл программы
-  void nodeFromUDPProcess(){
+  void nodeProcess(){
     if (getMsgFromUDP){
       getMsgFromUDP = false;
       sendMsgToTofCamControl();
@@ -55,8 +55,8 @@ private:
 
   // данные при нормальном режиме работы
   uint8_t dataToUDP[DATA_TO_UDP_SIZE];
-  uint8_t dataToTofCamControlTopic[DATA_TO_TOF_CAM_CONTROL_TOPIC_SIZE];
-  uint8_t dataFromTofCamControlTopic[DATA_FROM_TOF_CAM_CONTROL_TOPIC_SIZE];
+  uint8_t dataToTofCamControl[DATA_TO_TOF_CAM_CONTROL_TOPIC_SIZE];
+  uint8_t dataFromTofCamControl[DATA_FROM_TOF_CAM_CONTROL_TOPIC_SIZE];
   
   // остальные переменные
   ros::Publisher toTofCamControlPub;
@@ -64,11 +64,11 @@ private:
 
   uint32_t send_count_udp                     = 0;
   uint32_t recvd_count_udp                    = 0;
-  uint32_t send_count_topic_tof_cam_control   = 0;
-  uint32_t recvd_count_topic_tof_cam_control  = 0;
+  uint32_t send_count_tof_cam_control         = 0;
+  uint32_t recvd_count_tof_cam_control        = 0;
   uint32_t resvdFailCount                     = 0;
   uint32_t sendFailCount                      = 0;
-  uint8_t  resvdBytesFromTofCamControl        = 0;
+  uint32_t resvdBytesFromTofCamControl        = 0;
 
   bool getMsgFromUDP                          = false;
 
@@ -94,20 +94,21 @@ private:
   // полученные данные с ROS-топика "расфасовываются" в переменные для дальнейшей отправки по UDP
   void from_tof_cam_control_callback(const std_msgs::ByteMultiArray::ConstPtr& recvdMsg){
     
-    recvd_count_topic_tof_cam_control++;
+    recvd_count_tof_cam_control++;
     resvdBytesFromTofCamControl = recvdMsg->data.size();
     
-    std::cout << "\n\033[1;34mRECVD FROM TOPIC fromTofCamControlTopic resvdBytesFromTofCamControl = \033[0m" << resvdBytesFromTofCamControl << std::endl;
-    std::cout << "recvd_count_topic_tof_cam_control = " << recvd_count_topic_tof_cam_control << std::endl;
+    std::cout << "\n\033[1;34mRECVD FROM TOPIC fromTofCamControlTopic resvdBytesFromTofCamControl = \033[0m" 
+        << resvdBytesFromTofCamControl << std::endl;
+    std::cout << "recvd_count_tof_cam_control = " << recvd_count_tof_cam_control << std::endl;
 
     if (recvdMsg->data.size() == DATA_FROM_TOF_CAM_CONTROL_TOPIC_SIZE){
       for (int i = 0; i < recvdMsg->data.size(); i++){
-        dataFromTofCamControlTopic[i] = recvdMsg->data[i];
-        printf("[%u]", dataFromTofCamControlTopic[i]);
+        dataFromTofCamControl[i] = recvdMsg->data[i];
+        printf("[%u]", dataFromTofCamControl[i]);
       }
       std::cout << std::endl;
-      currentState.from_tof_cam_control_command  = dataFromTofCamControlTopic[0];
-      currentState.from_tof_cam_control_OK       = dataFromTofCamControlTopic[1];
+      currentState.from_tof_cam_control_command  = dataFromTofCamControl[0];
+      currentState.from_tof_cam_control_OK       = dataFromTofCamControl[1];
     }
   }
 
@@ -166,8 +167,8 @@ private:
     Вывод в консоль отправляемых по UDP данных
   */
   void printSendToUDPData(uint32_t bytes_transferred){
+    std::cout << "\nsend_count_udp = " << send_count_udp << std::endl;
     std::cout << "\033[1;36mSEND TO UDP bytes_transferred = \033[0m" << bytes_transferred << std::endl;
-    std::cout << "send_count_udp = " << send_count_udp << std::endl;
     for (int i = 0; i < bytes_transferred; i++){
       printf("[%u]", dataToUDP[i]);
     }
@@ -194,7 +195,7 @@ private:
     recvd_count_udp++;
     if (!printGetFromUDPData(bytes_transferred)) return;
     getMsgFromUDP = true;
-    memcpy(dataToTofCamControlTopic,  &dataFromUDP[3], sizeof(dataToTofCamControlTopic));
+    memcpy(dataToTofCamControl,  &dataFromUDP[3], sizeof(dataToTofCamControl));
     memcpy(currentState.keepalive,    &dataFromUDP[4], sizeof(currentState.keepalive));
 
     read_msg_udp();
@@ -205,13 +206,16 @@ private:
     std_msgs::ByteMultiArray msg;
     msg.layout.dim.push_back(std_msgs::MultiArrayDimension());
     msg.layout.dim[0].size = 1;
-    msg.layout.dim[0].stride = sizeof(dataToTofCamControlTopic);
+    msg.layout.dim[0].stride = sizeof(dataToTofCamControl);
     msg.data.clear();
+
+    send_count_tof_cam_control++;
+    std::cout << "\nsend_count_tof_cam_control = " << send_count_tof_cam_control << std::endl;
     std::cout << "\033[1;34mSEND T0 toTofCamControlTopic: \033[0m";
 
-    for (int i = 0; i < sizeof(dataToTofCamControlTopic); i++) {
-      printf("[%u]", dataToTofCamControlTopic[i]);
-      msg.data.push_back(dataToTofCamControlTopic[i]);
+    for (int i = 0; i < sizeof(dataToTofCamControl); i++) {
+      printf("[%u]", dataToTofCamControl[i]);
+      msg.data.push_back(dataToTofCamControl[i]);
     }
     std::cout << std::endl;
     
@@ -288,7 +292,7 @@ int main(int argc, char* argv[])
     boost::asio::io_service io_service;
     UDPServer udpServer(io_service);
     while(ros::ok()){
-      udpServer.nodeFromUDPProcess();
+      udpServer.nodeProcess();
       io_service.poll_one();
       ros::spinOnce();
     }

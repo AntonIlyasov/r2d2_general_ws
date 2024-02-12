@@ -160,10 +160,10 @@ set(SOURCES
   src/umba_crc_table.c
   include/led_eth_receiver/umba_crc_table.h)
 
-add_executable(led_eth src/led_eth_receiver_node.cpp ${SOURCES})
-target_include_directories (led_eth PRIVATE include/led_eth_receiver/ src/)
+add_executable(led_udp_rx src/led_eth_receiver_node.cpp ${SOURCES})
+target_include_directories (led_udp_rx PRIVATE include/led_eth_receiver/ src/)
 
-target_link_libraries(led_eth
+target_link_libraries(led_udp_rx
   ${catkin_LIBRARIES}
 )
 #############
