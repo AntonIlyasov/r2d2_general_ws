@@ -168,14 +168,14 @@ set(OPENNI2_INCLUDE include/tof_cam/libs/Include/)
 set(OPENNI2_REDIST  include/tof_cam/libs/Redist/)
 
 
-add_executable(tof_cam_node ${SOURCES} src/tof_cam_node.cpp)
-target_link_libraries(tof_cam_node ${catkin_LIBRARIES})
-target_link_libraries(tof_cam_node ${OpenCV_LIBRARIES})
-target_link_libraries(tof_cam_node ${Boost_LIBRARIES})
-target_include_directories(tof_cam_node PRIVATE ${OpenCV_INCLUDE_DIRS} ${OPENNI2_INCLUDE})
-target_include_directories (tof_cam_node PRIVATE include/tof_cam/ src/)
-target_link_directories(tof_cam_node PRIVATE ${OPENNI2_REDIST})
-target_link_libraries(tof_cam_node ${OpenCV_LIBS} libOpenNI2.so)
+add_executable(tof_cam ${SOURCES} src/tof_cam_node.cpp)
+target_link_libraries(tof_cam ${catkin_LIBRARIES})
+target_link_libraries(tof_cam ${OpenCV_LIBRARIES})
+target_link_libraries(tof_cam ${Boost_LIBRARIES})
+target_include_directories(tof_cam PRIVATE ${OpenCV_INCLUDE_DIRS} ${OPENNI2_INCLUDE})
+target_include_directories (tof_cam PRIVATE include/tof_cam/ src/)
+target_link_directories(tof_cam PRIVATE ${OPENNI2_REDIST})
+target_link_libraries(tof_cam ${OpenCV_LIBS} libOpenNI2.so)
 
 #############
 ## Install ##

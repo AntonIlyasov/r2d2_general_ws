@@ -6,39 +6,96 @@
 
 Tof_cam::Tof_cam(){
   if (oni.init() != openni::STATUS_OK){
-    printf("Initializatuion failed");
+    printf("Initializatuion failed\n");
+    exit(1);
   }
   printf("oni.init()\n");
-  
-  pubColor  = nh.advertise<sensor_msgs::Image>(TO_COLOR_TOPIC, 1);
-  pubDepth  = nh.advertise<sensor_msgs::Image>(TO_DEPTH_TOPIC, 1);
-  pubIr     = nh.advertise<sensor_msgs::Image>(TO_IR_TOPIC, 1);
-  commands_sub = nh.subscribe(FROM_COMMAND_TOPIC, 1, &Tof_cam::fromCommandTopicCallback, this);
-  
-  memset(commandFromTopic, 0, sizeof(commandFromTopic));
-  commandFromTopic[3] = 3;
-  countBmp            = 0;
-  eth_recvd_count     = 0;
+
+  toTofCamControlPub   = nh.advertise<std_msgs::ByteMultiArray>(TO_TOF_CAM_CONTROL_TOPIC_NAME, 0);
+  fromTofCamControlSub = nh.subscribe<std_msgs::ByteMultiArray>(FROM_TOF_CAM_CONTROL_TOPIC_NAME, 0, 
+      &Tof_cam::fromTofCamControlCallback, this);
+
+  pubColor  = nh.advertise<sensor_msgs::Image>(TO_COLOR_TOPIC_NAME, 0);
+  pubDepth  = nh.advertise<sensor_msgs::Image>(TO_DEPTH_TOPIC_NAME, 0);
+  pubIr     = nh.advertise<sensor_msgs::Image>(TO_IR_TOPIC_NAME,    0);
+
+  memset(dataToTofCamControl, 0, sizeof(dataToTofCamControl));
+  memset(dataFromTofCamControl, 0, sizeof(dataFromTofCamControl));
 }
 
-Tof_cam::~Tof_cam(){}
-
-Tof_cam::Tof_cam(int a){}
-
-void Tof_cam::fromCommandTopicCallback(const std_msgs::ByteMultiArray::ConstPtr& msg) {
-  eth_recvd_count++;
-  std::cout << "\033[1;34m fromCommandTopicCallback \033[0m\n";
-  std::cout << "eth_recvd_count         = " << eth_recvd_count << std::endl;
-  std::cout << "recvd_msg->data.size()  = " << msg->data.size() << std::endl;
-  for (int i = 0; i < msg->data.size(); i++){
-    commandFromTopic[i] = (uint8_t)msg->data[i];
-    printf("[%u]", commandFromTopic[i]);
+// основной цикл программы
+void Tof_cam::nodeProcess(){
+  if (getMsgFromTofCamControl){
+    getMsgFromTofCamControl = false;
+    switch (getCmdFromTofCamControl())
+    {
+      case static_cast<int>(TofCamCmd::shutdown):             //0x00
+        shutdownTofCam();
+        break;
+      case static_cast<int>(TofCamCmd::reset):                //0x01
+        resetTofCam();
+        break;
+      case static_cast<int>(TofCamCmd::turnOn):               //0x02
+        turnOnTofCam();
+        break;
+      case static_cast<int>(TofCamCmd::publishNormalQuality): //0x03
+        publishColorFrame();
+        publishDepthFrame16C1();
+        publishIrFrame();
+        break;
+      case static_cast<int>(TofCamCmd::publishMaxQuality):    //0x04
+        publishColorFrameMaxQuality();
+        publishDepthFrame16C1();
+        publishIrFrame();
+        break;
+      default:
+        break;
+    }
+    sendMsgToTofCamControl();
   }
-  std::cout << "\n";
 }
 
-uint8_t Tof_cam::getCommandFromTopic(){
-  return commandFromTopic[3];
+void Tof_cam::fromTofCamControlCallback(const std_msgs::ByteMultiArray::ConstPtr& recvdMsg) {
+  getMsgFromTofCamControl = true;
+  recvd_count_tof_cam_control++;
+  resvdBytesFromTofCamControl = recvdMsg->data.size();
+
+  std::cout << "\n\033[1;34mRECVD FROM TOPIC toTofCamTopic resvdBytesFromTofCamControl = \033[0m" 
+      << resvdBytesFromTofCamControl << std::endl;
+  std::cout << "recvd_count_tof_cam_control = " << recvd_count_tof_cam_control << std::endl;
+
+  if (recvdMsg->data.size() == DATA_FROM_TOF_CAM_CONTROL_TOPIC_SIZE){
+    for (int i = 0; i < recvdMsg->data.size(); i++){
+      dataFromTofCamControl[i] = recvdMsg->data[i];
+      printf("[%u]", dataFromTofCamControl[i]);
+    }
+    std::cout << std::endl;
+  }
+}
+
+void Tof_cam::sendMsgToTofCamControl(){
+  //отправка пакета в топик "fromTofCamTopic"
+  std_msgs::ByteMultiArray msg;
+  msg.layout.dim.push_back(std_msgs::MultiArrayDimension());
+  msg.layout.dim[0].size = 1;
+  msg.layout.dim[0].stride = sizeof(dataToTofCamControl);
+  msg.data.clear();
+
+  send_count_tof_cam_control++;
+  std::cout << "send_count_tof_cam_control = " << send_count_tof_cam_control << std::endl;
+  std::cout << "\033[1;34mSEND T0 fromTofCamTopic: \033[0m";
+
+  for (int i = 0; i < sizeof(dataToTofCamControl); i++) {
+    printf("[%u]", dataToTofCamControl[i]);
+    msg.data.push_back(dataToTofCamControl[i]);
+  }
+  std::cout << std::endl;
+  
+  toTofCamControlPub.publish(msg);
+}
+
+uint8_t Tof_cam::getCmdFromTofCamControl(){
+  return dataFromTofCamControl[0];
 }
 
 void Tof_cam::getColorFrame(){
@@ -99,7 +156,12 @@ void Tof_cam::publishColorFrame(){
     out_msg.encoding = sensor_msgs::image_encodings::BGR8;
     out_msg.image = colorFrame;
     pubColor.publish(out_msg.toImageMsg());
+
+    dataToTofCamControl[0] = dataFromTofCamControl[0];
+    dataToTofCamControl[1] = static_cast<int>(TofCamErrorStatus::allOk);
+    return;
   }
+  dataToTofCamControl[1] = static_cast<int>(TofCamErrorStatus::error);
 }
 
 void Tof_cam::publishColorFrameMaxQuality(){
@@ -115,56 +177,17 @@ void Tof_cam::publishColorFrameMaxQuality(){
     out_msg.encoding = sensor_msgs::image_encodings::BGR8;
     out_msg.image = colorFrameMaxQuality;
     pubColor.publish(out_msg.toImageMsg());
+
+    dataToTofCamControl[0] = dataFromTofCamControl[0];
+    dataToTofCamControl[1] = static_cast<int>(TofCamErrorStatus::allOk);
+    return;
   }
-}
-
-void Tof_cam::saveColorFrameMaxQuality(){
-  countBmp++;
-  if (!oni.m_colorStreamIsValid()) return;
-  cv::Mat colorFrameMaxQuality;
-  oni.setColorVideoMode(OpenNIOpenCV::COLOR_1920_1080_RGB888_15FPS);
-  std::cout << "publishColorFrameMaxQuality: " << oni.getColorResolutionX() << "x" << oni.getColorResolutionY()<< ": " << oni.getColorPixelFormat() << ": " << oni.getColorFps() << std::endl;
-  oni.getColorFrame(colorFrameMaxQuality);
-  cv::imwrite("colorFrameMaxQuality" + std::to_string(countBmp) + ".bmp", colorFrameMaxQuality);
-  commandFromTopic[3] = 4;
-}
-
-void Tof_cam::sendToTCPColorFrameMaxQuality(){
-  boost::system::error_code ec;
-  boost::asio::io_context context;
-  boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::make_address("127.0.0.1"), 1234);    
-  boost::asio::ip::tcp::socket socket(context);
-  socket.connect(endpoint, ec);
-
-  if (socket.is_open()) {
-    std::string fileName = "colorFrameMaxQuality" + std::to_string(countBmp) + ".bmp";
-    socket.send(boost::asio::buffer(fileName.data(), fileName.size()));
-
-    // Wait for response from server
-    socket.wait(socket.wait_read);
-    std::size_t bytes = socket.available();
-    if (bytes > 0) {
-      std::string response;
-      response.resize(bytes);
-      socket.read_some(boost::asio::buffer(response.data(), bytes), ec);
-      if (response != "OK")
-      {
-        std::cerr << "Unexpected server Error!\n";
-      }
-    }
-
-    std::ifstream input(fileName.data(), std::ios::binary);
-    std::string buffer(std::istreambuf_iterator<char>(input), {});
-    socket.send(boost::asio::buffer(buffer.data(), buffer.size()));
-    input.close();
-    std::cout << "File sent.\n";
-  }
+  dataToTofCamControl[1] = static_cast<int>(TofCamErrorStatus::error);
 }
 
 void Tof_cam::publishDepthFrame16C1(){
   if (!oni.m_depthStreamIsValid()) return;
   cv::Mat depthFrame16C1;
-  // std::cout << "publishDepthFrame16C1         RESOLUTION: " << oni.getDepthResolutionX() << "x" << oni.getDepthResolutionY() << "\n";
   oni.getDepthFrame16C1(depthFrame16C1);
 
   if(!depthFrame16C1.empty()){
@@ -173,13 +196,17 @@ void Tof_cam::publishDepthFrame16C1(){
     out_msg.encoding = sensor_msgs::image_encodings::MONO16;
     out_msg.image = depthFrame16C1;
     pubDepth.publish(out_msg.toImageMsg());
+
+    dataToTofCamControl[0] = dataFromTofCamControl[0];
+    dataToTofCamControl[1] = static_cast<int>(TofCamErrorStatus::allOk);
+    return;
   }
+  dataToTofCamControl[1] = static_cast<int>(TofCamErrorStatus::error);
 }
 
 void Tof_cam::publishIrFrame(){
   if (!oni.m_irStreamIsValid()) return;
   cv::Mat irFrame;
-  // std::cout << "publishIrFrame                RESOLUTION: " << oni.getIrResolutionX() << "x" << oni.getIrResolutionY() << "\n";
   oni.getIrFrame(irFrame);
 
   if(!irFrame.empty()){
@@ -188,23 +215,39 @@ void Tof_cam::publishIrFrame(){
     out_msg.encoding = sensor_msgs::image_encodings::MONO8;
     out_msg.image = irFrame;
     pubIr.publish(out_msg.toImageMsg());
+
+    dataToTofCamControl[0] = dataFromTofCamControl[0];
+    dataToTofCamControl[1] = static_cast<int>(TofCamErrorStatus::allOk);
+    return;
   }
+  dataToTofCamControl[1] = static_cast<int>(TofCamErrorStatus::error);
 }
 
 void Tof_cam::shutdownTofCam(){
   if (oni.getIsTurnOn()){
     std::cout << "\033[1;31m shutdown TofCam\n \033[0m\n";
     oni.~OpenNI2OpenCV();
+    dataToTofCamControl[0] = dataFromTofCamControl[0];
+    dataToTofCamControl[1] = static_cast<int>(TofCamErrorStatus::allOk);
   }
 }
 
 void Tof_cam::resetTofCam(){
 
-  if (oni.getIsReset()) return;
+  std::cout << "here1\n";
+
+  if (oni.getIsReset()){
+    std::cout << "here2\n";
+    dataToTofCamControl[0] = dataFromTofCamControl[0];
+    dataToTofCamControl[1] = static_cast<int>(TofCamErrorStatus::allOk);
+    return;
+  }
 
   if (oni.getIsTurnOn()){
     std::cout << "\033[1;31m shutdown TofCam\n \033[0m\n";
     oni.~OpenNI2OpenCV();
+    dataToTofCamControl[0] = dataFromTofCamControl[0];
+    dataToTofCamControl[1] = static_cast<int>(TofCamErrorStatus::allOk);
   }
 
   if (oni.getIsTurnOff()){
@@ -213,10 +256,11 @@ void Tof_cam::resetTofCam(){
       printf("Initializatuion failed");
     }
     printf("oni.init()\n");
+    dataToTofCamControl[0] = dataFromTofCamControl[0];
+    dataToTofCamControl[1] = static_cast<int>(TofCamErrorStatus::allOk);
   }
 
   oni.setIsReset(true);
-  commandFromTopic[3] = 3;
 }
 
 void Tof_cam::turnOnTofCam(){
@@ -226,6 +270,7 @@ void Tof_cam::turnOnTofCam(){
       printf("Initializatuion failed");
     }
     printf("oni.init()\n");
+    dataToTofCamControl[0] = dataFromTofCamControl[0];
+    dataToTofCamControl[1] = static_cast<int>(TofCamErrorStatus::allOk);
   }
-  commandFromTopic[3] = 3;
 }

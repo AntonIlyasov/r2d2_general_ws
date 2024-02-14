@@ -255,6 +255,8 @@ namespace OpenNIOpenCV {
       im_RGB.copyTo(frame);
       cvtColor(frame, frame, cv::COLOR_RGB2BGR);
 
+      is_reset = false;
+
       // openni::RGB888Pixel* dData = (openni::RGB888Pixel*)colorFrame.getData();
       // memcpy(frame.data, dData, colorFrame.getStrideInBytes() * colorFrame.getHeight());
       // cvtColor(frame, frame, cv::COLOR_RGB2BGR);
@@ -290,6 +292,7 @@ namespace OpenNIOpenCV {
               }
           }
       }
+      is_reset = false;
   }
 
   void OpenNI2OpenCV::getDepthFrame16C1(cv::Mat& frame){
@@ -302,8 +305,9 @@ namespace OpenNIOpenCV {
       m_depthStream.readFrame(&depthFrame);
       openni::DepthPixel* dData = (openni::DepthPixel*)depthFrame.getData();
       memcpy(frame.data, dData, depthFrame.getStrideInBytes() * depthFrame.getHeight());
-      cv::multiply(frame, 0.333, frame);
+      frame = frame / 3;
 
+      is_reset = false;
   }
 
   void OpenNI2OpenCV::getIrFrame(cv::Mat& frame){
@@ -316,6 +320,8 @@ namespace OpenNIOpenCV {
       m_irStream.readFrame(&irFrame);
       openni::Grayscale16Pixel* dData = (openni::Grayscale16Pixel*)irFrame.getData();
       memcpy(frame.data, dData, irFrame.getStrideInBytes() * irFrame.getHeight());
+
+      is_reset = false;
   }
 
   void OpenNI2OpenCV::printColorSensorInfo(){
