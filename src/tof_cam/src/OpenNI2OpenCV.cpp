@@ -237,6 +237,14 @@ namespace OpenNIOpenCV {
       return openni::STATUS_OK;
   }
 
+  openni::Status OpenNI2OpenCV::getStatus(){
+    if (m_depthStream.isValid() && m_colorStream.isValid() && m_irStream.isValid()){
+      return openni::STATUS_OK; 
+    } else {
+      return openni::STATUS_ERROR;
+    }
+  }
+
   void OpenNI2OpenCV::getColorFrame(cv::Mat& frame)
   {
       // if(frame.cols != m_width || frame.rows != m_height) {

@@ -43,6 +43,15 @@ private:
   uint32_t resvdBytesFromTofCamControl        = 0;
   bool getMsgFromTofCamControl                = false;
 
+  struct currentState_{
+    uint8_t tof_cam_cmd_current               = static_cast<uint8_t>(TofCamCmd::shutdown);
+    uint8_t tof_cam_error_status              = static_cast<uint8_t>(TofCamErrorStatus::error);
+  };
+
+  currentState_ currentState;
+
+  void process();
+  
   void fromTofCamControlCallback(const std_msgs::ByteMultiArray::ConstPtr& recvdMsg);
   void sendMsgToTofCamControl();
 
@@ -62,5 +71,7 @@ private:
   void shutdownTofCam();
   void resetTofCam();
   void turnOnTofCam();
-  uint8_t getCmdFromTofCamControl();
+
+  uint8_t getTofCamCmd();
+  uint8_t getTofCamErrorStatus();
 };
