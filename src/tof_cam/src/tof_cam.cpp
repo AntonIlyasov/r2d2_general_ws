@@ -48,6 +48,11 @@ void Tof_cam::nodeProcess(){
         publishDepthFrame16C1();
         publishIrFrame();
         break;
+      case static_cast<int>(TofCamCmd::saveMaxQuality):       //0x05
+        publishColorFrameMaxQuality();
+        publishDepthFrame16C1();
+        publishIrFrame();
+        break;
       default:
         break;
     }
