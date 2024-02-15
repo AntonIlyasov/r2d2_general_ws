@@ -1,8 +1,0 @@
-prefix=/home/anton202/vik_ws/devel
-
-Name: cam_rtsp_vik
-Description: Description of cam_rtsp_vik
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

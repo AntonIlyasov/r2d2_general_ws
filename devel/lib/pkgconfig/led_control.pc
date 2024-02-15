@@ -1,8 +1,0 @@
-prefix=/home/anton202/r2d2_general_ws/devel
-
-Name: led_control
-Description: Description of led_control
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
