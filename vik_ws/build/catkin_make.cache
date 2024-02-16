@@ -1,2 +1,0 @@
-cam_rtsp_vik:eth_vik_rx:ros_rtsp
--DCATKIN_DEVEL_PREFIX=/home/anton202/vik_ws/devel -DCMAKE_INSTALL_PREFIX=/home/anton202/vik_ws/install -G Unix Makefiles
