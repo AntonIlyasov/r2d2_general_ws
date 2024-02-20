@@ -70,6 +70,15 @@
         "csignal": "cpp",
         "codecvt": "cpp",
         "future": "cpp",
-        "filesystem": "cpp"
-    }
+        "filesystem": "cpp",
+        "shared_mutex": "cpp"
+    },
+    "python.autoComplete.extraPaths": [
+        "/home/anton202/r2d2_general_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/anton202/r2d2_general_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ]
 }
