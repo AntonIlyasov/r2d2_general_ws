@@ -63,6 +63,15 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "bit": "cpp"
-    }
+        "bit": "cpp",
+        "*.ipp": "cpp"
+    },
+    "python.autoComplete.extraPaths": [
+        "/home/anton202/r2d2_general_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/anton202/r2d2_general_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ]
 }

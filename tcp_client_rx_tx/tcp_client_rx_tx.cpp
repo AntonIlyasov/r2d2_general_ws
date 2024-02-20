@@ -6,9 +6,10 @@
 #include <stdio.h>
 #include <string.h>
 #include "umba_crc_table.h"
+using namespace boost::asio;
 using boost::asio::ip::tcp;
 using boost::asio::ip::address;
-
+using ip::tcp;
 #define MY_CLIENT_PORT 1234
 #define MY_CLIENT_IP "127.0.0.1"
 
@@ -33,12 +34,11 @@ inline void int_to_bytes(uint32_t &val, uint8_t *bytes) {
 class TCPClient
 {
 public:
-    TCPClient(boost::asio::io_context& io_context)
-    : io_context_(io_context), socket_(io_context){
+    TCPClient(boost::asio::io_service& io_service)
+    : io_service_(io_service), socket_(io_service){
         std::cout << "TCP CLIENT IS RUNNING\n";
-        sender_endpoint_ = tcp::endpoint(address::from_string(MY_CLIENT_IP), MY_CLIENT_PORT);
-        boost::system::error_code ec;
-        socket_.connect(sender_endpoint_, ec);
+        socket_.connect(ip::tcp::endpoint(boost::asio::ip::address::from_string(MY_CLIENT_IP), MY_CLIENT_PORT));
+        std::cout << "TCP CLIENT IS RUNNING2222222222222\n";
         // boost::bind(&TCPClient::tcp_handle_receive, this, boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred);
         // read_msg_tcp();
     }
@@ -54,7 +54,7 @@ public:
         static uint32_t send_count = 0;
         boost::system::error_code err;
         
-        auto sent = socket_.send(boost::asio::buffer(msg), 0, err);
+        auto sent = socket_.write_some(boost::asio::buffer(msg), err);
         std::cout << "sent = " << sent << "\n";
         if (!err && sent > 0){
             std::cout << "\nSEND TO TCP: ";
@@ -80,7 +80,7 @@ public:
     }
 
 private:
-    boost::asio::io_context& io_context_;
+    boost::asio::io_service& io_service_;
     tcp::socket socket_;
     tcp::endpoint sender_endpoint_;
     enum {max_length = 600};
@@ -118,13 +118,13 @@ int main(int argc, char* argv[])
     }
 
     try{
-        boost::asio::io_context io_context;
-        TCPClient tcpClient(io_context);
+        boost::asio::io_service io_service;
+        TCPClient tcpClient(io_service);
         uint8_t cmd  = (uint8_t)std::stoi(argv[1]);
         while(1) {
             tcpClient.sendMsg(cmd);
             keepalive++;
-            io_context.poll_one();
+            io_service.poll_one();
         }
     } catch (std::exception e){
         std::cerr << "Exeption: " << e.what() << std::endl;

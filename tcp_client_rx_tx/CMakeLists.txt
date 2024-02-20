@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 PROJECT (udp_client_rx_tx)
-
+set(CMAKE_CXX_STANDARD 17)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
 find_package(OpenCV REQUIRED )
@@ -43,6 +43,12 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 add_executable(tcp_client_rx_tx tcp_client_rx_tx.cpp umba_crc_table.c umba_crc_table.h)
 target_link_libraries( tcp_client_rx_tx ${Boost_LIBRARIES} )
+
+add_executable(simple_tcp_client simple_tcp_client.cpp umba_crc_table.c umba_crc_table.h)
+target_link_libraries( simple_tcp_client ${Boost_LIBRARIES} )
+
+add_executable(simple_tcp_server simple_tcp_server.cpp umba_crc_table.c umba_crc_table.h)
+target_link_libraries( simple_tcp_server ${Boost_LIBRARIES} )
 
 endif()
 

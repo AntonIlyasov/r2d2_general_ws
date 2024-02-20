@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build",
+  "command": "/usr/bin/g++  -DBOOST_ALL_NO_LIB -DBOOST_SYSTEM_DYN_LINK   -std=c++11 -pthread -pthread -g   -std=gnu++17 -o CMakeFiles/simple_tcp_server.dir/simple_tcp_server.cpp.o -c /home/anton202/r2d2_general_ws/tcp_client_rx_tx/simple_tcp_server.cpp",
+  "file": "/home/anton202/r2d2_general_ws/tcp_client_rx_tx/simple_tcp_server.cpp"
+},
+{
+  "directory": "/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build",
+  "command": "/usr/bin/gcc -DBOOST_ALL_NO_LIB -DBOOST_SYSTEM_DYN_LINK  -g   -o CMakeFiles/simple_tcp_server.dir/umba_crc_table.c.o   -c /home/anton202/r2d2_general_ws/tcp_client_rx_tx/umba_crc_table.c",
+  "file": "/home/anton202/r2d2_general_ws/tcp_client_rx_tx/umba_crc_table.c"
+},
+{
+  "directory": "/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build",
+  "command": "/usr/bin/g++  -DBOOST_ALL_NO_LIB -DBOOST_SYSTEM_DYN_LINK   -std=c++11 -pthread -pthread -g   -std=gnu++17 -o CMakeFiles/simple_tcp_client.dir/simple_tcp_client.cpp.o -c /home/anton202/r2d2_general_ws/tcp_client_rx_tx/simple_tcp_client.cpp",
+  "file": "/home/anton202/r2d2_general_ws/tcp_client_rx_tx/simple_tcp_client.cpp"
+},
+{
+  "directory": "/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build",
+  "command": "/usr/bin/gcc -DBOOST_ALL_NO_LIB -DBOOST_SYSTEM_DYN_LINK  -g   -o CMakeFiles/simple_tcp_client.dir/umba_crc_table.c.o   -c /home/anton202/r2d2_general_ws/tcp_client_rx_tx/umba_crc_table.c",
+  "file": "/home/anton202/r2d2_general_ws/tcp_client_rx_tx/umba_crc_table.c"
+},
+{
+  "directory": "/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build",
+  "command": "/usr/bin/g++  -DBOOST_ALL_NO_LIB -DBOOST_SYSTEM_DYN_LINK   -std=c++11 -pthread -pthread -g   -std=gnu++17 -o CMakeFiles/tcp_client_rx_tx.dir/tcp_client_rx_tx.cpp.o -c /home/anton202/r2d2_general_ws/tcp_client_rx_tx/tcp_client_rx_tx.cpp",
+  "file": "/home/anton202/r2d2_general_ws/tcp_client_rx_tx/tcp_client_rx_tx.cpp"
+},
+{
+  "directory": "/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build",
+  "command": "/usr/bin/gcc -DBOOST_ALL_NO_LIB -DBOOST_SYSTEM_DYN_LINK  -g   -o CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.o   -c /home/anton202/r2d2_general_ws/tcp_client_rx_tx/umba_crc_table.c",
+  "file": "/home/anton202/r2d2_general_ws/tcp_client_rx_tx/umba_crc_table.c"
+}
+]

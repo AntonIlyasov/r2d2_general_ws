@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/anton202/r2d2_general_ws/tcp_client_rx_tx/umba_crc_table.h
+stdint.h
+-
+
+/home/anton202/r2d2_general_ws/tcp_client_rx_tx/very_simple_tcp_server.cpp
+cstdlib
+-
+iostream
+-
+boost/asio.hpp
+-
+boost/thread.hpp
+-
+boost/chrono.hpp
+-
+stdio.h
+-
+string.h
+-
+umba_crc_table.h
+/home/anton202/r2d2_general_ws/tcp_client_rx_tx/umba_crc_table.h
+boost/enable_shared_from_this.hpp
+-
+boost/bind.hpp
+-
+

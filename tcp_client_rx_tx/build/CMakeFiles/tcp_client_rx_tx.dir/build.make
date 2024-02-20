@@ -60,28 +60,28 @@ include CMakeFiles/tcp_client_rx_tx.dir/flags.make
 CMakeFiles/tcp_client_rx_tx.dir/tcp_client_rx_tx.cpp.o: CMakeFiles/tcp_client_rx_tx.dir/flags.make
 CMakeFiles/tcp_client_rx_tx.dir/tcp_client_rx_tx.cpp.o: ../tcp_client_rx_tx.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/tcp_client_rx_tx.dir/tcp_client_rx_tx.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tcp_client_rx_tx.dir/tcp_client_rx_tx.cpp.o -c /home/anton202/r2d2_general_ws/tcp_client_rx_tx/tcp_client_rx_tx.cpp
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/tcp_client_rx_tx.dir/tcp_client_rx_tx.cpp.o -c /home/anton202/r2d2_general_ws/tcp_client_rx_tx/tcp_client_rx_tx.cpp
 
 CMakeFiles/tcp_client_rx_tx.dir/tcp_client_rx_tx.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/tcp_client_rx_tx.dir/tcp_client_rx_tx.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/anton202/r2d2_general_ws/tcp_client_rx_tx/tcp_client_rx_tx.cpp > CMakeFiles/tcp_client_rx_tx.dir/tcp_client_rx_tx.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/anton202/r2d2_general_ws/tcp_client_rx_tx/tcp_client_rx_tx.cpp > CMakeFiles/tcp_client_rx_tx.dir/tcp_client_rx_tx.cpp.i
 
 CMakeFiles/tcp_client_rx_tx.dir/tcp_client_rx_tx.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/tcp_client_rx_tx.dir/tcp_client_rx_tx.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/anton202/r2d2_general_ws/tcp_client_rx_tx/tcp_client_rx_tx.cpp -o CMakeFiles/tcp_client_rx_tx.dir/tcp_client_rx_tx.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/anton202/r2d2_general_ws/tcp_client_rx_tx/tcp_client_rx_tx.cpp -o CMakeFiles/tcp_client_rx_tx.dir/tcp_client_rx_tx.cpp.s
 
 CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.o: CMakeFiles/tcp_client_rx_tx.dir/flags.make
 CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.o: ../umba_crc_table.c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.o   -c /home/anton202/r2d2_general_ws/tcp_client_rx_tx/umba_crc_table.c
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.o   -c /home/anton202/r2d2_general_ws/tcp_client_rx_tx/umba_crc_table.c
 
 CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/anton202/r2d2_general_ws/tcp_client_rx_tx/umba_crc_table.c > CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/anton202/r2d2_general_ws/tcp_client_rx_tx/umba_crc_table.c > CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.i
 
 CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/anton202/r2d2_general_ws/tcp_client_rx_tx/umba_crc_table.c -o CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/anton202/r2d2_general_ws/tcp_client_rx_tx/umba_crc_table.c -o CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.s
 
 # Object files for target tcp_client_rx_tx
 tcp_client_rx_tx_OBJECTS = \

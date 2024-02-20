@@ -56,6 +56,17 @@ CMAKE_BINARY_DIR = /home/anton202/r2d2_general_ws/tcp_client_rx_tx/build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -66,17 +77,6 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
-
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/bin/cmake-gui -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -111,6 +111,32 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named simple_tcp_server
+
+# Build rule for target.
+simple_tcp_server: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 simple_tcp_server
+.PHONY : simple_tcp_server
+
+# fast build rule for target.
+simple_tcp_server/fast:
+	$(MAKE) -f CMakeFiles/simple_tcp_server.dir/build.make CMakeFiles/simple_tcp_server.dir/build
+.PHONY : simple_tcp_server/fast
+
+#=============================================================================
+# Target rules for targets named simple_tcp_client
+
+# Build rule for target.
+simple_tcp_client: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 simple_tcp_client
+.PHONY : simple_tcp_client
+
+# fast build rule for target.
+simple_tcp_client/fast:
+	$(MAKE) -f CMakeFiles/simple_tcp_client.dir/build.make CMakeFiles/simple_tcp_client.dir/build
+.PHONY : simple_tcp_client/fast
+
+#=============================================================================
 # Target rules for targets named tcp_client_rx_tx
 
 # Build rule for target.
@@ -122,6 +148,60 @@ tcp_client_rx_tx: cmake_check_build_system
 tcp_client_rx_tx/fast:
 	$(MAKE) -f CMakeFiles/tcp_client_rx_tx.dir/build.make CMakeFiles/tcp_client_rx_tx.dir/build
 .PHONY : tcp_client_rx_tx/fast
+
+simple_tcp_client.o: simple_tcp_client.cpp.o
+
+.PHONY : simple_tcp_client.o
+
+# target to build an object file
+simple_tcp_client.cpp.o:
+	$(MAKE) -f CMakeFiles/simple_tcp_client.dir/build.make CMakeFiles/simple_tcp_client.dir/simple_tcp_client.cpp.o
+.PHONY : simple_tcp_client.cpp.o
+
+simple_tcp_client.i: simple_tcp_client.cpp.i
+
+.PHONY : simple_tcp_client.i
+
+# target to preprocess a source file
+simple_tcp_client.cpp.i:
+	$(MAKE) -f CMakeFiles/simple_tcp_client.dir/build.make CMakeFiles/simple_tcp_client.dir/simple_tcp_client.cpp.i
+.PHONY : simple_tcp_client.cpp.i
+
+simple_tcp_client.s: simple_tcp_client.cpp.s
+
+.PHONY : simple_tcp_client.s
+
+# target to generate assembly for a file
+simple_tcp_client.cpp.s:
+	$(MAKE) -f CMakeFiles/simple_tcp_client.dir/build.make CMakeFiles/simple_tcp_client.dir/simple_tcp_client.cpp.s
+.PHONY : simple_tcp_client.cpp.s
+
+simple_tcp_server.o: simple_tcp_server.cpp.o
+
+.PHONY : simple_tcp_server.o
+
+# target to build an object file
+simple_tcp_server.cpp.o:
+	$(MAKE) -f CMakeFiles/simple_tcp_server.dir/build.make CMakeFiles/simple_tcp_server.dir/simple_tcp_server.cpp.o
+.PHONY : simple_tcp_server.cpp.o
+
+simple_tcp_server.i: simple_tcp_server.cpp.i
+
+.PHONY : simple_tcp_server.i
+
+# target to preprocess a source file
+simple_tcp_server.cpp.i:
+	$(MAKE) -f CMakeFiles/simple_tcp_server.dir/build.make CMakeFiles/simple_tcp_server.dir/simple_tcp_server.cpp.i
+.PHONY : simple_tcp_server.cpp.i
+
+simple_tcp_server.s: simple_tcp_server.cpp.s
+
+.PHONY : simple_tcp_server.s
+
+# target to generate assembly for a file
+simple_tcp_server.cpp.s:
+	$(MAKE) -f CMakeFiles/simple_tcp_server.dir/build.make CMakeFiles/simple_tcp_server.dir/simple_tcp_server.cpp.s
+.PHONY : simple_tcp_server.cpp.s
 
 tcp_client_rx_tx.o: tcp_client_rx_tx.cpp.o
 
@@ -156,6 +236,8 @@ umba_crc_table.o: umba_crc_table.c.o
 
 # target to build an object file
 umba_crc_table.c.o:
+	$(MAKE) -f CMakeFiles/simple_tcp_server.dir/build.make CMakeFiles/simple_tcp_server.dir/umba_crc_table.c.o
+	$(MAKE) -f CMakeFiles/simple_tcp_client.dir/build.make CMakeFiles/simple_tcp_client.dir/umba_crc_table.c.o
 	$(MAKE) -f CMakeFiles/tcp_client_rx_tx.dir/build.make CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.o
 .PHONY : umba_crc_table.c.o
 
@@ -165,6 +247,8 @@ umba_crc_table.i: umba_crc_table.c.i
 
 # target to preprocess a source file
 umba_crc_table.c.i:
+	$(MAKE) -f CMakeFiles/simple_tcp_server.dir/build.make CMakeFiles/simple_tcp_server.dir/umba_crc_table.c.i
+	$(MAKE) -f CMakeFiles/simple_tcp_client.dir/build.make CMakeFiles/simple_tcp_client.dir/umba_crc_table.c.i
 	$(MAKE) -f CMakeFiles/tcp_client_rx_tx.dir/build.make CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.i
 .PHONY : umba_crc_table.c.i
 
@@ -174,6 +258,8 @@ umba_crc_table.s: umba_crc_table.c.s
 
 # target to generate assembly for a file
 umba_crc_table.c.s:
+	$(MAKE) -f CMakeFiles/simple_tcp_server.dir/build.make CMakeFiles/simple_tcp_server.dir/umba_crc_table.c.s
+	$(MAKE) -f CMakeFiles/simple_tcp_client.dir/build.make CMakeFiles/simple_tcp_client.dir/umba_crc_table.c.s
 	$(MAKE) -f CMakeFiles/tcp_client_rx_tx.dir/build.make CMakeFiles/tcp_client_rx_tx.dir/umba_crc_table.c.s
 .PHONY : umba_crc_table.c.s
 
@@ -183,9 +269,17 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... rebuild_cache"
+	@echo "... simple_tcp_server"
+	@echo "... simple_tcp_client"
 	@echo "... tcp_client_rx_tx"
+	@echo "... simple_tcp_client.o"
+	@echo "... simple_tcp_client.i"
+	@echo "... simple_tcp_client.s"
+	@echo "... simple_tcp_server.o"
+	@echo "... simple_tcp_server.i"
+	@echo "... simple_tcp_server.s"
 	@echo "... tcp_client_rx_tx.o"
 	@echo "... tcp_client_rx_tx.i"
 	@echo "... tcp_client_rx_tx.s"

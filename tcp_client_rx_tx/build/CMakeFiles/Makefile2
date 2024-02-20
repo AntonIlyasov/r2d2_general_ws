@@ -53,6 +53,8 @@ CMAKE_BINARY_DIR = /home/anton202/r2d2_general_ws/tcp_client_rx_tx/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
+all: CMakeFiles/simple_tcp_server.dir/all
+all: CMakeFiles/simple_tcp_client.dir/all
 all: CMakeFiles/tcp_client_rx_tx.dir/all
 
 .PHONY : all
@@ -63,9 +65,65 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
+clean: CMakeFiles/simple_tcp_server.dir/clean
+clean: CMakeFiles/simple_tcp_client.dir/clean
 clean: CMakeFiles/tcp_client_rx_tx.dir/clean
 
 .PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/simple_tcp_server.dir
+
+# All Build rule for target.
+CMakeFiles/simple_tcp_server.dir/all:
+	$(MAKE) -f CMakeFiles/simple_tcp_server.dir/build.make CMakeFiles/simple_tcp_server.dir/depend
+	$(MAKE) -f CMakeFiles/simple_tcp_server.dir/build.make CMakeFiles/simple_tcp_server.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles --progress-num=4,5,6 "Built target simple_tcp_server"
+.PHONY : CMakeFiles/simple_tcp_server.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/simple_tcp_server.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/simple_tcp_server.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles 0
+.PHONY : CMakeFiles/simple_tcp_server.dir/rule
+
+# Convenience name for target.
+simple_tcp_server: CMakeFiles/simple_tcp_server.dir/rule
+
+.PHONY : simple_tcp_server
+
+# clean rule for target.
+CMakeFiles/simple_tcp_server.dir/clean:
+	$(MAKE) -f CMakeFiles/simple_tcp_server.dir/build.make CMakeFiles/simple_tcp_server.dir/clean
+.PHONY : CMakeFiles/simple_tcp_server.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/simple_tcp_client.dir
+
+# All Build rule for target.
+CMakeFiles/simple_tcp_client.dir/all:
+	$(MAKE) -f CMakeFiles/simple_tcp_client.dir/build.make CMakeFiles/simple_tcp_client.dir/depend
+	$(MAKE) -f CMakeFiles/simple_tcp_client.dir/build.make CMakeFiles/simple_tcp_client.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles --progress-num=1,2,3 "Built target simple_tcp_client"
+.PHONY : CMakeFiles/simple_tcp_client.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/simple_tcp_client.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/simple_tcp_client.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles 0
+.PHONY : CMakeFiles/simple_tcp_client.dir/rule
+
+# Convenience name for target.
+simple_tcp_client: CMakeFiles/simple_tcp_client.dir/rule
+
+.PHONY : simple_tcp_client
+
+# clean rule for target.
+CMakeFiles/simple_tcp_client.dir/clean:
+	$(MAKE) -f CMakeFiles/simple_tcp_client.dir/build.make CMakeFiles/simple_tcp_client.dir/clean
+.PHONY : CMakeFiles/simple_tcp_client.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/tcp_client_rx_tx.dir
@@ -74,7 +132,7 @@ clean: CMakeFiles/tcp_client_rx_tx.dir/clean
 CMakeFiles/tcp_client_rx_tx.dir/all:
 	$(MAKE) -f CMakeFiles/tcp_client_rx_tx.dir/build.make CMakeFiles/tcp_client_rx_tx.dir/depend
 	$(MAKE) -f CMakeFiles/tcp_client_rx_tx.dir/build.make CMakeFiles/tcp_client_rx_tx.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles --progress-num=1,2,3 "Built target tcp_client_rx_tx"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/anton202/r2d2_general_ws/tcp_client_rx_tx/build/CMakeFiles --progress-num=7,8,9 "Built target tcp_client_rx_tx"
 .PHONY : CMakeFiles/tcp_client_rx_tx.dir/all
 
 # Build rule for subdir invocation for target.
