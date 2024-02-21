@@ -64,7 +64,13 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "bit": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "strstream": "cpp",
+        "unordered_set": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "shared_mutex": "cpp",
+        "cfenv": "cpp"
     },
     "python.autoComplete.extraPaths": [
         "/home/anton202/r2d2_general_ws/devel/lib/python3/dist-packages",
