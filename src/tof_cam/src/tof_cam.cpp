@@ -5,9 +5,8 @@
 #include <sensor_msgs/image_encodings.h>
 
 Tof_cam::Tof_cam(){
-  if (oni.init() != openni::STATUS_OK){
+  while (oni.init() != openni::STATUS_OK){
     printf("Initializatuion failed\n");
-    exit(1);
   }
   printf("oni.init()\n");
 
