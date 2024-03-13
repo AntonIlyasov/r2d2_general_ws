@@ -1,9 +1,8 @@
 #include "led_control.h"
 
 Led_control::Led_control() {
-  led_eth_receiver_sub = _node.subscribe<std_msgs::ByteMultiArray>("from_led_eth_receiver", 0, &Led_control::led_eth_receiverCallback, this);
-  std::cout << "Led_control IS RUNNING\n";
-  ros::spin();
+  led_eth_receiver_sub = _node.subscribe<std_msgs::ByteMultiArray>("from_led_eth_receiver", 0,
+      &Led_control::led_eth_receiverCallback, this);
 }
 
 Led_control::~Led_control(){}

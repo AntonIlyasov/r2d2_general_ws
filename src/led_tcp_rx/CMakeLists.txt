@@ -1,23 +1,21 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(tof_cam)
+project(led_tcp_rx)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
-set(CMAKE_CXX_STANDARD 17)
-# SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  cv_bridge
-  sensor_msgs
   message_generation
   message_runtime
   roscpp
+  rospy
   std_msgs
 )
-find_package(Boost 1.71.0 REQUIRED COMPONENTS system)
-find_package(OpenCV 4.2.0 REQUIRED)
+
+find_package(Boost REQUIRED COMPONENTS system)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -73,12 +71,11 @@ find_package(OpenCV 4.2.0 REQUIRED)
 #   Action2.action
 # )
 
-# Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  roscpp
-  std_msgs
-)
+## Generate added messages and services with any dependencies listed here
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -111,8 +108,8 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES tof_cam
-#  CATKIN_DEPENDS message_generation message_runtime roscpp std_msgs
+#  LIBRARIES up_core
+#  CATKIN_DEPENDS message_generation message_runtime roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
 
@@ -125,12 +122,11 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
-  ${OpenCV_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/tof_cam.cpp
+#   src/${PROJECT_NAME}/up_core.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -141,7 +137,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/tof_cam_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/up_core_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -158,24 +154,25 @@ include_directories(
 #   ${catkin_LIBRARIES}
 # )
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+
 set(SOURCES 
-  src/tof_cam.cpp
-  src/OpenNI2OpenCV.cpp
+  src/umba_crc_table.c
+  include/led_tcp_rx/umba_crc_table.h)
+
+# add_executable(led_udp_rx src/led_tcp_rx_node.cpp ${SOURCES})
+# target_include_directories (led_udp_rx PRIVATE include/led_tcp_rx/ src/)
+
+# target_link_libraries(led_udp_rx
+#   ${catkin_LIBRARIES}
+# )
+
+add_executable(led_tcp_rx src/led_tcp_rx_discrete.cpp ${SOURCES})
+target_include_directories (led_tcp_rx PRIVATE include/led_tcp_rx/ src/)
+
+target_link_libraries(led_tcp_rx
+  ${catkin_LIBRARIES}
 )
-
-# Пути к библиотеке OpenNI2
-set(OPENNI2_INCLUDE include/tof_cam/libs/Include/)
-set(OPENNI2_REDIST  include/tof_cam/libs/Redist/)
-
-
-add_executable(tof_cam ${SOURCES} src/tof_cam_node.cpp)
-target_link_libraries(tof_cam ${catkin_LIBRARIES})
-target_link_libraries(tof_cam ${OpenCV_LIBRARIES})
-target_link_libraries(tof_cam ${Boost_LIBRARIES})
-target_include_directories(tof_cam PRIVATE ${OpenCV_INCLUDE_DIRS} ${OPENNI2_INCLUDE})
-target_include_directories (tof_cam PRIVATE include/tof_cam/ src/)
-target_link_directories(tof_cam PRIVATE ${OPENNI2_REDIST})
-target_link_libraries(tof_cam ${OpenCV_LIBS} libOpenNI2.so)
 
 #############
 ## Install ##
@@ -224,7 +221,7 @@ target_link_libraries(tof_cam ${OpenCV_LIBS} libOpenNI2.so)
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_tof_cam.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_up_core.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

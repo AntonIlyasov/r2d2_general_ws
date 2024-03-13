@@ -161,10 +161,10 @@ set(SOURCES
   src/led_control.cpp
 )
 
-add_executable(led_control_node ${SOURCES} src/led_control_node.cpp)
-target_link_libraries(led_control_node ${catkin_LIBRARIES})
-target_link_libraries(led_control_node ${OpenCV_LIBRARIES})
-target_include_directories(led_control_node PRIVATE include/led_control/ src/)
+# add_executable(led_control_node ${SOURCES} src/led_control_node.cpp)
+# target_link_libraries(led_control_node ${catkin_LIBRARIES})
+# target_link_libraries(led_control_node ${OpenCV_LIBRARIES})
+# target_include_directories(led_control_node PRIVATE include/led_control/ src/)
 
 #############
 ## Install ##
