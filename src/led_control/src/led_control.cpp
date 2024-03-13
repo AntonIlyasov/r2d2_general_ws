@@ -7,6 +7,7 @@ Led_control::Led_control() {
 
 Led_control::~Led_control(){}
 
+
 void Led_control::led_eth_receiverCallback(const std_msgs::ByteMultiArray::ConstPtr& recvd_msg) {
   std::cout << "\nget bytes!\n";
   std::cout << "recvd_msg->data.size() = " << recvd_msg->data.size() << std::endl;
